@@ -5,48 +5,56 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>Henkilökohtaiset opintopolut · BC Helsinki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&amp;family=Source+Serif+4:opsz,wght@8..60,600&amp;display=swap">
 <style>
-:root{--ink:#1F1813;--ink-soft:#4A3E36;--parchment:#F4ECDD;--parchment-2:#EADFC9;--burgundy:#69013B;
---burgundy-deep:#4A0029;--hairline:rgba(31,24,19,.15);
---serif:'Source Serif 4',Georgia,serif;--sans:'Public Sans',Arial,sans-serif}
+:root{--ink:#1F1813;--ink-soft:#4A3E36;--gold:#9C7A3A;--parchment:#F4ECDD;--parchment-2:#EADFC9;--burgundy:#69013B;
+--burgundy-deep:#4A0029;--hairline:rgba(31,24,19,.15);--hairline-2:rgba(31,24,19,.3);
+--serif:'Source Serif 4',Georgia,'Times New Roman',serif;--sans:'Public Sans',Arial,Helvetica,sans-serif}
 *{box-sizing:border-box}
-html{background:var(--parchment)}
-body{margin:0;background:var(--parchment);color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.55;
--webkit-text-size-adjust:100%}
-.sivu{max-width:56rem;margin:0 auto;padding:40px 16px 48px}
+html{background:var(--parchment);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--parchment);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55}
+.sivu{max-width:60rem;margin:0 auto;padding:24px 16px 56px}
 h1,h2{font-family:var(--serif);font-weight:600;line-height:1.15;margin:0}
-h1{font-size:clamp(34px,6vw,52px);letter-spacing:-.01em}
-h2{font-size:clamp(22px,3.5vw,28px)}
+h1{font-size:clamp(30px,5.5vw,48px);letter-spacing:-.01em}
+h2{font-size:clamp(22px,3.6vw,28px)}
 p{margin:0 0 .7em}
-a{color:var(--burgundy);text-decoration:underline;text-decoration-color:rgba(105,1,59,.35);
+a{color:var(--burgundy);text-decoration:underline;text-decoration-color:rgba(105,1,59,.4);
 text-decoration-thickness:1px;text-underline-offset:3px}
-a:hover,a:focus{color:var(--burgundy-deep);text-decoration-color:var(--burgundy-deep)}
-a:focus-visible{outline:2px solid var(--burgundy);outline-offset:2px}
-.num{font-family:var(--serif);font-style:italic}
-.kansi{border-top:2px solid var(--burgundy);padding-top:18px;margin-bottom:28px}
-.ylaotsikko{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--burgundy);margin-bottom:10px}
+a:hover{color:var(--burgundy-deep);text-decoration-color:currentColor}
+:focus{outline:3px solid var(--burgundy);outline-offset:3px}
+:focus:not(:focus-visible){outline:none}
+.num{font-variant-numeric:tabular-nums}
+.ylaotsikko,.maara{font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.kansi{padding:4px 0 28px;margin-bottom:32px;border-bottom:1px solid var(--hairline)}
+.ylaotsikko{color:var(--burgundy);margin-bottom:10px}
 .johdanto{max-width:40rem;color:var(--ink-soft);margin-top:16px}
-.huomautus{background:var(--parchment-2);border-left:4px solid var(--burgundy);padding:14px 18px;margin:0 0 36px}
-.huomautus p{margin:0}
+.huomautus{background:var(--parchment-2);border-top:3px solid var(--burgundy);padding:16px 20px;margin:0 0 48px}
+.huomautus p{margin:0;max-width:44rem}
 .huomautus strong{font-family:var(--serif);font-size:1.1em}
-.polut h2{margin-bottom:6px}
-.maara{color:var(--ink-soft);margin-bottom:14px}
-ol.lista{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairline)}
-ol.lista>li{border-bottom:1px solid var(--hairline);padding:16px 0}
-.rivi{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.polut h2{margin-bottom:8px}
+.maara{color:var(--ink-soft);margin-bottom:16px}
+ol.lista{list-style:none;margin:0;padding:0;border-top:1px solid var(--hairline-2)}
+ol.lista>li{border-bottom:1px solid var(--hairline);padding:20px 0}
+.rivi{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
 .otsikko{margin:0}
 .pseud{font-family:var(--serif);font-weight:600;font-size:22px}
 .toteutus{display:block;color:var(--ink-soft)}
-dl.tiedot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;margin:0}
-dl.tiedot dt{font-size:13px;letter-spacing:.04em;color:var(--ink-soft)}
-dl.tiedot dd{margin:1px 0 0}
+dl.tiedot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px;margin:0}
+dl.tiedot dt{color:var(--ink-soft);font-size:14px}
+dl.tiedot dd{margin:2px 0 0}
 .tila{font-weight:600}
 .tila-kaynnissa{color:var(--burgundy)}
+.tila-valmis,.tila-ei-alkanut{color:var(--ink-soft)}
 .linkki{margin:0}
+.linkki a{display:inline-flex;align-items:center;min-height:48px;padding:11px 18px;border:1px solid var(--ink-soft);
+font-weight:600;text-decoration:none;color:var(--ink)}
+.linkki a:hover{border-color:var(--burgundy);color:var(--burgundy)}
 .tyhja{color:var(--ink-soft)}
-.alatunniste{margin-top:40px;border-top:1px solid var(--hairline);padding-top:12px;font-size:14px;color:var(--ink-soft)}
-@media(min-width:44rem){
-.rivi{grid-template-columns:minmax(0,1.4fr) minmax(0,2.4fr) auto;align-items:start;gap:20px}
+.alatunniste{margin-top:48px;border-top:1px solid var(--hairline-2);padding-top:12px;font-size:14px;color:var(--ink-soft)}
+@media(min-width:48rem){
+body{font-size:18px}
+.sivu{padding:48px 24px 80px}
+.rivi{grid-template-columns:minmax(0,1.3fr) minmax(0,2.6fr) auto;align-items:center;gap:24px}
 dl.tiedot{grid-template-columns:repeat(4,minmax(0,1fr))}
 .linkki{text-align:right;white-space:nowrap}}
 </style>
