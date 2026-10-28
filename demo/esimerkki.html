@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Esimerkkipolku · Viikkopolku</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&amp;family=Source+Serif+4:opsz,wght@8..60,600&amp;display=swap">
+<style>
+:root{--ink:#1F1813;--ink-soft:#4A3E36;--gold:#9C7A3A;--parchment:#F4ECDD;--parchment-2:#EADFC9;
+--burgundy:#69013B;--burgundy-deep:#4A0029;--hairline:rgba(31,24,19,.15);--hairline-2:rgba(31,24,19,.3);
+--serif:'Source Serif 4',Georgia,'Times New Roman',serif;--sans:'Public Sans',Arial,Helvetica,sans-serif;--reuna:16px}
+*{box-sizing:border-box}
+html{background:var(--parchment);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--parchment);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55}
+.sivu{max-width:44rem;margin:0 auto;padding:24px var(--reuna) 56px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--ink);line-height:1.2;margin:0}
+h1{font-size:clamp(28px,5vw,40px);line-height:1.1;letter-spacing:-.01em}
+p{margin:0 0 .6em}
+a{color:var(--burgundy);text-decoration:underline;text-decoration-color:rgba(105,1,59,.4);
+text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:var(--burgundy-deep);text-decoration-color:currentColor}
+/* näkyvä fokus: :focus varalla vanhalle Safarille, :focus-visible poistaa renkaan hiiren klikkauksesta */
+:focus{outline:3px solid var(--burgundy);outline-offset:3px}
+:focus:not(:focus-visible){outline:none}
+.num{font-variant-numeric:tabular-nums}
+.nw{white-space:nowrap}
+.erotin{color:var(--ink-soft);padding:0 .2em}
+[hidden]{display:none!important}
+button,label,.nappi{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* pienet versaalimerkit */
+.ylaotsikko,.nyt-merkki,.lohko-merkki,.seuraavaksi,.materiaalit-otsikko,.tuki-otsikko,.vt-otsikko,.merkinta,
+.jakso-merkinta{font-family:var(--sans);font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+line-height:1.4}
+.kansi{padding:4px 0 24px;margin:0 0 24px;border-bottom:1px solid var(--hairline)}
+.ylaotsikko{color:var(--burgundy);margin:0 0 10px}
+/* painikkeet: suorat reunat, vähintään 48 px (tekstipainikkeet 44 px) */
+.avaaja{font:inherit;color:inherit;background:transparent;border:0;border-radius:0;margin:0;padding:0;text-align:left;
+cursor:pointer;-webkit-appearance:none;appearance:none}
+.nappi,.nyt button,.tallennus button{font:inherit;font-size:16px;font-weight:600;line-height:1.3;display:inline-flex;
+align-items:center;justify-content:center;min-height:48px;padding:11px 20px;border:1px solid var(--ink-soft);
+border-radius:0;background:transparent;color:var(--ink);cursor:pointer;text-decoration:none;margin:0 8px 8px 0;
+text-align:center;-webkit-appearance:none;appearance:none}
+.nappi:hover,.nyt button:hover,.tallennus button:hover{border-color:var(--burgundy);color:var(--burgundy)}
+.nappi.ensisijainen,.nyt button.ensisijainen{background:var(--burgundy);border-color:var(--burgundy);color:var(--parchment)}
+.nappi.ensisijainen:hover,.nyt button.ensisijainen:hover{background:var(--burgundy-deep);border-color:var(--burgundy-deep);
+color:var(--parchment)}
+.linkkinappi,.nyt button.linkkinappi{font:inherit;font-size:16px;font-weight:400;display:inline-flex;align-items:center;
+min-height:44px;padding:0 4px;margin:0 8px 8px 0;border:0;background:transparent;color:var(--burgundy);
+text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.avaus-merkki{display:block;width:1.5rem;text-align:right}
+.avaus-merkki::before{content:"+";font-family:var(--serif);font-weight:400;font-size:28px;line-height:1;color:var(--burgundy)}
+.avaaja[aria-expanded=true] .avaus-merkki::before{content:"−"}
+/* Nyt-paneeli */
+.nyt{background:var(--parchment-2);border-top:3px solid var(--burgundy);padding:20px var(--reuna) 24px;
+margin:0 calc(-1 * var(--reuna)) 40px}
+.nyt-merkki{color:var(--burgundy);margin:0 0 12px}
+.nyt-ilmoitus{font-size:15px;color:var(--ink);margin:0}
+.nyt-ilmoitus:not(:empty){margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid var(--hairline-2)}
+/* kuittausnäkymä näyttää saman asian: ilmoitus jää vain ruudunlukijalle */
+.sivu[data-tila=kuittaus] .nyt-ilmoitus{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;
+overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.nyt-otsikko{font-size:clamp(24px,4.2vw,32px);line-height:1.15;margin:0 0 12px}
+.nyt-otsikko:focus{outline:none}
+.nyt-viikko{font-size:14px;color:var(--ink-soft);margin:0 0 4px}
+.nyt-kuvaus{max-width:38rem;margin:0 0 20px}
+.nyt-jakso{font-size:18px;line-height:1.4;margin:0 0 6px;padding-top:16px;border-top:1px solid var(--hairline-2)}
+.nyt-raja{margin:0 0 4px}
+.nyt-merkitty{display:flex;align-items:flex-start}
+.nyt-merkitty .ruutu-kuva{flex:none;margin:0 12px 0 0}
+.nyt-merkitty .merkinta{flex:none;margin:3px 0 0 12px;color:var(--burgundy)}
+.nyt-seuraava{color:var(--ink-soft)}
+.nyt-toiminnot{display:flex;flex-wrap:wrap;align-items:center;margin:20px 0 0}
+.nyt-paiva,.nyt-huom,.nyt-jaljessa{font-size:15px;color:var(--ink-soft);margin:12px 0 0}
+.nyt-tila{font-size:16px;margin:16px 0 0;padding:2px 0 2px 12px;border-left:3px solid var(--hairline-2)}
+.nyt-tila p{margin:0 0 4px}
+.nyt-ehdotus{margin:8px 0 0}
+.nyt .tuki{background:var(--parchment)}
+.nyt ul.siirrot{margin:0 0 10px;padding-left:1.2em}
+.nyt fieldset{border:0;margin:0 0 12px;padding:0}
+.nyt legend{font-weight:600;padding:0;margin:0 0 4px}
+.nyt .valinta{display:flex;align-items:center;min-height:44px;cursor:pointer}
+.nyt input[type=radio]{width:22px;height:22px;margin:0 12px 0 0;accent-color:var(--burgundy)}
+.nyt input[type=text]{font:inherit;font-size:16px;width:100%;max-width:28rem;min-height:44px;padding:8px 10px;
+margin:4px 0 0 34px;border:1px solid var(--ink-soft);border-radius:0;background:var(--parchment)}
+.nyt ol.tarkistus{list-style:none;margin:0 0 10px;padding:0}
+.nyt ol.tarkistus>li{margin-bottom:14px}
+.nyt ul.tehdyt{margin:4px 0 0;padding-left:1.1em;font-size:16px}
+/* mittarit (U3): päivän aika Nyt-paneelissa, viikon tehtäväpalat, kurssin viikkonauha; ei prosentteja */
+.paivamittari{margin:20px 0 0;padding-top:14px;border-top:1px solid var(--hairline-2)}
+.paivamittari .nyt-paiva{margin:0 0 8px}
+.paiva-raide{height:8px;background:var(--parchment);border:1px solid var(--hairline-2)}
+.paiva-taytto{height:100%;background:var(--burgundy)}
+.vk-palat{display:flex;gap:3px;height:12px;margin:12px 0 0}
+.vk-pala{flex-basis:0;min-width:8px;border:1px solid var(--hairline-2);background:var(--parchment)}
+.vk-pala.kesken{background:linear-gradient(90deg,var(--burgundy) 50%,var(--parchment) 50%)}
+.vk-pala.tehty{background:var(--burgundy);border-color:var(--burgundy)}
+.vk-pala.siirretty{background:var(--parchment-2);border-style:dashed}
+.nauha{list-style:none;display:flex;gap:4px;margin:12px 0 16px;padding:0}
+.nauha li{flex:1 1 0;min-width:0}
+.nauha-loma{flex-grow:2}
+.nauha-ruutu{display:flex;align-items:flex-end;justify-content:center;min-height:44px;padding:0 0 4px;font-size:13px;
+font-variant-numeric:tabular-nums;color:var(--ink-soft);border:1px solid var(--hairline-2);text-decoration:none}
+a.nauha-ruutu:hover{border-color:var(--burgundy)}
+.nauha-loma .nauha-ruutu{background:var(--parchment-2);border-style:dashed}
+.nauha-vk[data-tila=tehty]{background:var(--burgundy);border-color:var(--burgundy);color:var(--parchment)}
+.nauha-vk[data-tila=kesken]{background:linear-gradient(0deg,var(--parchment-2) 50%,transparent 50%);color:var(--ink)}
+.nauha-vk[data-tila=nyt]{border:2px solid var(--burgundy);color:var(--ink);font-weight:600}
+/* viikko: "Tämä viikko" ja keskeneräiset */
+.lohko-merkki{color:var(--burgundy);margin:0 0 8px}
+.tama-viikko,.kesken-viikot{margin:0 0 48px}
+.viikko>h2{font-size:clamp(26px,4.2vw,32px);line-height:1.15}
+.viikko h2 .pvm{display:inline-block;font-family:var(--sans);font-weight:400;font-size:16px;color:var(--ink-soft);
+margin-left:.4em}
+.viikko-tieto{font-size:15px;color:var(--ink-soft);margin:6px 0 0}
+.viikko-tila{font-size:15px;color:var(--ink-soft);margin:6px 0 0}
+.aikajana .vk-palat{display:none}
+.kortti-osat{font-size:15px;color:var(--ink-soft);margin:12px 0 0}
+.viikko-sisalto{margin-top:20px}
+.tavoite{font-size:16px;color:var(--ink-soft);max-width:40rem;margin:0 0 16px}
+.kiinteat-rivit{list-style:none;margin:0 0 20px;padding:0}
+.kiinteat-rivit li{padding:8px 0 8px 14px;border-left:3px solid var(--hairline-2);font-size:16px}
+.kiinteat-rivit li+li{margin-top:8px}
+.kiintea-pvm{font-weight:600}
+.kiintea-kuvaus{display:block;font-size:15px;color:var(--ink-soft)}
+/* tehtäväkortit: otsikkorivi on painike; tila sanoin ja vasemman reunan viivalla */
+.tehtavat{list-style:none;margin:0;padding:0}
+.viikon-tehtavat{border-bottom:1px solid var(--hairline)}
+.tehtava-rivi,.materiaalit{border-top:1px solid var(--hairline)}
+.tehtava{border-left:3px solid transparent;padding-left:12px;margin-left:-15px}
+.on-seuraava>.tehtava{border-left-color:var(--burgundy)}
+.kortti-otsikko{font-family:var(--sans);font-size:inherit;font-weight:400;margin:0}
+.kortti-avaaja{display:grid;grid-template-columns:minmax(0,1fr) 2rem;column-gap:8px;width:100%;min-height:56px;
+padding:16px 0 14px;align-items:start}
+.kortti-avaaja>span{grid-column:1}
+.kortti-avaaja>.avaus-merkki{grid-column:2;grid-row:1/span 3;justify-self:end;margin-top:-2px}
+.seuraavaksi{color:var(--burgundy);padding-left:2rem;margin:0 0 4px}
+.tehtava-nimi{display:block;font-weight:600;font-size:18px;line-height:1.35;padding-left:2rem;overflow-wrap:anywhere}
+.tehtava-nro{float:left;width:2rem;margin-left:-2rem;font-weight:400;color:var(--ink-soft)}
+.kortti-avaaja .meta{padding-left:2rem;margin-top:4px}
+.kortti-avaaja:hover .tehtava-otsikko{text-decoration:underline;text-decoration-color:var(--hairline-2);
+text-underline-offset:4px}
+.meta{display:block;font-size:15px;color:var(--ink-soft)}
+.tila-merkki{font-weight:600;color:var(--burgundy)}
+.tila-merkki::before{content:"·";font-weight:400;color:var(--ink-soft);padding:0 .45em 0 .25em}
+.tehty .tila-merkki,.siirretty .tila-merkki{color:var(--ink-soft)}
+.tehtava-rivi.tehty .tehtava-otsikko,.tehtava-rivi.siirretty .tehtava-otsikko{color:var(--ink-soft)}
+.kortti-min{font-weight:400}
+.arvioitava{display:inline-block;font-family:var(--sans);font-weight:600;font-size:12px;
+letter-spacing:.1em;text-transform:uppercase;color:var(--burgundy);border:1px solid var(--burgundy);padding:0 6px;
+line-height:1.6;margin-left:.5em;vertical-align:2px}
+.tehtava-sisalto{padding:0 0 24px 2rem;min-width:0}
+.kuvaus{max-width:38rem;margin:0 0 8px}
+.tehtava-linkki-rivi{margin:0 0 4px}
+.tehtava-linkki{display:inline-flex;align-items:center;min-height:44px;font-weight:600}
+.viikon-raja{border-left:3px solid var(--ink-soft);padding:2px 0 2px 12px;margin:12px 0;font-size:16px}
+.kortti-valmis{margin-top:16px}
+.kortti-valmis-teksti{margin:0 0 10px}
+.kortti-valmis .nappi{justify-content:flex-start;text-align:left}
+/* jaksorivi: oikea checkbox on näkymätön 44 px:n kosketusalue, tila piirretään viereiseen kuvaan */
+.alatehtavat{list-style:none;margin:16px 0 0;padding:0;border-top:1px solid var(--hairline)}
+.alatehtava{border-bottom:1px solid var(--hairline);transition:background-color .8s ease-out}
+.alatehtava.juuri,.materiaali.juuri{background:var(--parchment-2)}
+.jakso-rivi{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:start;
+min-height:56px;padding:6px 0;cursor:pointer}
+.jakso-rivi>input.jakso{position:absolute;left:0;top:6px;width:44px;height:44px;margin:0;padding:0;opacity:0;
+cursor:pointer;z-index:1}
+.ruutu-kuva{grid-column:1;position:relative;display:block;width:26px;height:26px;margin-top:9px;
+border:2px solid var(--ink-soft);background:var(--parchment)}
+.jakso-rivi:hover .ruutu-kuva{border-color:var(--burgundy)}
+input.jakso:checked+.ruutu-kuva,.ruutu-kuva.valittu{background:var(--burgundy);border-color:var(--burgundy)}
+input.jakso:checked+.ruutu-kuva::after,.ruutu-kuva.valittu::after{content:"";position:absolute;left:7px;top:2px;
+width:7px;height:13px;border:solid var(--parchment);border-width:0 3px 3px 0;-webkit-transform:rotate(45deg);
+transform:rotate(45deg)}
+input.jakso:focus+.ruutu-kuva{outline:3px solid var(--burgundy);outline-offset:3px}
+input.jakso:focus:not(:focus-visible)+.ruutu-kuva{outline:none}
+.alatehtava-sisalto{grid-column:2;min-width:0;padding:10px 12px 6px 0}
+.alatehtava-sisalto>span{display:block}
+.alatehtava-teksti{overflow-wrap:anywhere}
+.jakso-ohje,.jakso-aikaraja{font-size:16px;margin-top:2px}
+.jakso-merkinta{grid-column:3;padding-top:14px;color:var(--burgundy)}
+/* materiaalit */
+.materiaalit{padding:12px 0 6px}
+.materiaalit-otsikko{color:var(--ink-soft);margin:0}
+.materiaalilista{list-style:none;margin:0;padding:0}
+.materiaali{transition:background-color .8s ease-out}
+.materiaali-nimi{grid-column:2;min-width:0;padding:10px 12px 6px 0;overflow-wrap:anywhere}
+.materiaali .meta{display:inline}
+.materiaali-linkki{display:inline-flex;align-items:center;min-height:44px;margin:0 0 4px 44px;font-size:16px}
+/* tukilaatikot */
+.tuki{background:var(--parchment-2);padding:14px 16px 8px;margin:16px 0 0;border-left:3px solid var(--gold)}
+.tuki-otsikko{color:var(--burgundy);margin:0 0 6px}
+.tuki p,.tuki li{font-size:16px}
+.tuki ol{margin:0 0 .6em;padding-left:1.4em}
+.tuki ol.ruutulista,.tuki ul.ruutulista{list-style:none;margin:0 0 .4em;padding:0}
+.ruutulista li{display:flex;margin-bottom:4px}
+.ruutu{flex:none;display:inline-block;width:14px;height:14px;margin:6px 10px 0 0;border:1px solid var(--ink-soft)}
+.tuki.riittava-taso{border-left-color:var(--burgundy)}
+.riittaa-loppu{font-size:15px;margin:6px 0 0}
+/* vapaaehtoiset ja viikkotarkistus */
+.vapaaehtoiset{margin-top:24px;border-top:1px solid var(--hairline)}
+.vapaat-otsikko{font-family:var(--sans);font-size:17px}
+.vapaat-otsikko .avaaja{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:56px;
+font-weight:600}
+.viikkotarkistus-kohta{margin-top:24px;max-width:40rem}
+.vt-otsikko{color:var(--ink-soft);margin:0 0 4px}
+.vt-teksti{font-size:15px;color:var(--ink-soft)}
+.tyhja{color:var(--ink-soft);font-size:16px;margin:0}
+/* koko kurssi: yhteenveto ja kaikki viikot kompaktina aikajanana (oletuksena kiinni) */
+.koko{margin:0 0 48px}
+.lohko-otsikko{font-size:clamp(22px,3.6vw,26px);margin:0 0 12px}
+.koko>.lohko-otsikko{margin:0 0 4px}
+.koko-tieto{font-size:15px;color:var(--ink-soft);margin:0 0 8px}
+.kaikki-avaaja{border-top:1px solid var(--hairline-2);border-bottom:1px solid var(--hairline);font-size:19px}
+.kaikki-viikot{padding:16px 0 0}
+.tiedot{display:flex;flex-wrap:wrap;margin:0 0 16px}
+.tiedot>div{margin:0 28px 10px 0}
+.tiedot dt{font-size:13px;color:var(--ink-soft)}
+.tiedot dd{margin:0;font-size:16px}
+.aikajana{border-top:1px solid var(--hairline-2)}
+.aikajana>.viikko,.aikajana>.vk-paikka{border-bottom:1px solid var(--hairline);padding:12px 0}
+.aikajana>.viikko{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:center}
+.aikajana>.viikko>*{grid-column:1}
+.aikajana>.viikko>h2{font-size:19px;line-height:1.3}
+.aikajana .viikko h2 .pvm{display:block;margin:0;font-size:15px}
+.aikajana>.viikko>.viikko-tieto{display:none}
+.aikajana>.viikko>.viikko-tila{font-size:15px;color:var(--ink-soft);margin:2px 0 0}
+.aikajana>.viikko>.viikko-avaaja{grid-column:2;grid-row:1/span 4;margin:0;min-height:44px;padding:8px 14px;font-size:15px}
+.aikajana>.viikko>.viikko-sisalto{grid-column:1/-1;margin-top:20px}
+.aikajana>.viikko.loma>h2,.aikajana>.viikko.tyhja-viikko>h2{color:var(--ink-soft)}
+.aikajana .loma .tavoite,.aikajana .tyhja-viikko .tyhja{font-size:14px;margin:2px 0 0}
+.vk-paikka{margin:0;font-size:15px}
+.vk-paikka a{display:inline-flex;align-items:center;min-height:44px}
+.vk-paikka .vk-nimi{font-family:var(--serif);font-weight:600;font-size:19px;color:var(--ink);margin-right:.5em}
+/* ohjeet sivun lopussa linkkirivinä (U8) */
+.apu{border-top:1px solid var(--hairline-2);padding-top:4px}
+.apulinkit{display:flex;flex-wrap:wrap;column-gap:20px}
+.apulinkit .apulinkki{display:inline-flex;width:auto;min-height:44px;padding:0;font-family:var(--sans);font-weight:400;
+font-size:16px;color:var(--burgundy);text-decoration:underline;text-underline-offset:3px}
+.apulinkit .apulinkki[aria-expanded=true]{font-weight:600;text-decoration:none}
+.apu .lohko-sisalto{padding:12px 0 24px}
+/* ensikerran ohje ja paluu Nyt-kohtaan */
+.vihje{display:flex;align-items:flex-start;gap:8px;margin:16px 0 0;padding:4px 0 4px 12px;border-left:3px solid var(--hairline-2);
+font-size:16px}
+.vihje span{flex:1;min-width:0;padding-top:10px}
+.vihje-sulje{flex:none;font:inherit;font-size:24px;line-height:1;min-width:44px;min-height:44px;border:0;background:transparent;
+color:var(--ink-soft);cursor:pointer}
+.ylos{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));
+z-index:5;display:inline-flex;align-items:center;min-height:48px;padding:0 18px;background:var(--burgundy);
+color:var(--parchment);font-weight:600;text-decoration:none}
+.ylos:hover{background:var(--burgundy-deep);color:var(--parchment)}
+.tavoite-avaaja{margin:-10px 0 12px}
+.lohko-avaaja{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:56px;padding:12px 0;
+font-family:var(--serif);font-weight:600}
+.lohko-sisalto{padding:0 0 24px;max-width:40rem}
+ol.numeroitu{list-style:none;counter-reset:n;margin:0;padding:0}
+ol.numeroitu>li{counter-increment:n;position:relative;padding:0 0 .6em 2rem}
+ol.numeroitu>li::before{content:counter(n);position:absolute;left:0;top:0;font-family:var(--serif);font-weight:600;
+color:var(--burgundy)}
+.tallennus{font-size:16px;color:var(--ink-soft)}
+.tallennus p{margin:0 0 10px}
+.alatunniste{border-top:1px solid var(--hairline-2);padding-top:12px;margin-top:40px;font-size:14px;color:var(--ink-soft)}
+.tuloste{display:none}
+@media (min-width:48rem){
+ body{font-size:18px}
+ .sivu{padding:48px 24px 80px}
+ .kansi{padding-bottom:28px;margin-bottom:32px}
+ .nyt{margin:0 0 56px;padding:28px 32px 32px}
+ .tama-viikko,.kesken-viikot,.koko{margin-bottom:56px}
+ .tehtava{padding-left:16px;margin-left:-19px}
+ .aikajana .viikko h2 .pvm{display:inline-block;margin-left:.5em}
+ .materiaali{display:flex;align-items:flex-start}
+ .materiaali .jakso-rivi{flex:1;min-width:0}
+ .materiaali-linkki{flex:none;margin:6px 0 0 16px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@page{size:A4;margin:14mm 14mm 16mm}
+@media print{
+ html,body{background:#fff}
+ body{font-size:10pt;line-height:1.3;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .sivu{max-width:none;padding:0}
+ .sivu>*:not(.kansi):not(.tuloste){display:none!important}
+ .kansi{margin-bottom:6px;padding-top:6px}
+ h1{font-size:18pt}
+ .tuloste{display:block}
+ .t-ohje{font-size:9pt;color:var(--ink-soft);margin:0 0 8px}
+ .t-viikko{border-top:1.5px solid var(--burgundy);padding-top:4px;margin:0 0 10px}
+ .t-viikko h2{font-size:13pt;margin:0 0 1px;break-after:avoid}
+ .t-tieto{font-size:9pt;color:var(--ink-soft);margin:0 0 4px}
+ .t-lista{list-style:none;margin:0;padding:0;column-count:2;column-gap:8mm}
+ .t-kortti,.t-materiaali{break-inside:avoid;margin:0 0 5px}
+ .t-otsikko{font-weight:600;margin:0}
+ .t-min{font-weight:400;color:var(--ink-soft)}
+ .t-jaksot{list-style:none;margin:0;padding:0 0 0 4mm}
+ .t-jaksot li{margin:0;text-indent:-4mm;padding-left:4mm}
+ .t-alaotsikko{font-size:8.5pt;letter-spacing:.06em;text-transform:uppercase;color:var(--burgundy);margin:2px 0 0 4mm}
+ .t-raja{font-size:9pt;margin:1px 0 0 4mm}
+ .t-ruutu{display:inline-block;width:9pt;height:9pt;border:1px solid #000;margin:0 4px -1px 0}
+ .t-tarkistus{font-size:9.5pt;margin:4px 0 0;break-inside:avoid}
+ .t-tarkistus .t-ruutu{margin-left:6px}
+ .t-loma{font-size:9.5pt;color:var(--ink-soft);border-top:1px solid var(--hairline);padding-top:3px;margin:0 0 10px}
+}
+</style>
+<style>
+.demo-nauha{background:var(--parchment-2);border-bottom:2px solid var(--burgundy);font-family:var(--sans);color:var(--ink)}
+.demo-nauha .sisus{max-width:46rem;margin:0 auto;padding-block:12px 14px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.demo-nauha p{margin:0;font-size:15px;line-height:1.45;min-width:0}
+.demo-nauha .merkki{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--burgundy);margin-right:.5em}
+.demo-nauha .tilanteet{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.demo-nauha .tilanteet span{font-size:13px;color:var(--ink-soft);margin-right:2px}
+.demo-nauha button{font:600 13px/1.2 var(--sans);padding:7px 10px;border:1px solid var(--hairline-2);background:var(--parchment);
+  color:var(--ink);cursor:pointer;border-radius:2px}
+.demo-nauha button[aria-pressed="true"]{background:var(--burgundy);border-color:var(--burgundy);color:#fff}
+.demo-nauha button:focus-visible,.demo-nauha a:focus-visible{outline:3px solid var(--burgundy);outline-offset:2px}
+.demo-nauha a{color:var(--burgundy);font-size:14px;font-weight:600}
+#tallennus-otsikko,#tallennus-sisalto{display:none!important}
+.demo-ilmoitus{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));
+  max-width:min(30rem,calc(100% - 32px));background:var(--ink);color:var(--parchment);font:15px/1.45 var(--sans);
+  padding:10px 14px;border-radius:2px;box-shadow:0 4px 14px rgba(0,0,0,.25);z-index:50}
+</style>
+<script>
+(function () {
+  'use strict';
+  // Demo: päivä lukitaan valitun tilanteen mukaan, jotta esimerkki näyttää samalta katselupäivästä riippumatta.
+  var AVAIN_DEMO = 'viikkopolku-demo:tilanne';
+  var TILANTEET = {
+    aloitus: { nimi: 'Ensimmäinen päivä', pvm: [2026, 10, 2, 9, 30], teksti: 'ma 2.11.2026' },
+    aikataulussa: { nimi: 'Viikko 3, aikataulussa', pvm: [2026, 10, 19, 10, 0], teksti: 'to 19.11.2026' },
+    jaljessa: { nimi: 'Viikko 3, jäljessä', pvm: [2026, 10, 19, 10, 0], teksti: 'to 19.11.2026' }
+  };
+  var valittu = 'aloitus';
+  try { var t = window.localStorage.getItem(AVAIN_DEMO); if (TILANTEET[t]) valittu = t; } catch (e) {}
+  var R = Date, p = TILANTEET[valittu].pvm, ero = new R(p[0], p[1], p[2], p[3], p[4]).getTime() - R.now();
+  function DemoDate() {
+    var a = [].slice.call(arguments);
+    if (!(this instanceof DemoDate)) return new R(R.now() + ero).toString();
+    if (!a.length) return new R(R.now() + ero);
+    return new (Function.prototype.bind.apply(R, [null].concat(a)))();
+  }
+  DemoDate.now = function () { return R.now() + ero; };
+  DemoDate.parse = R.parse; DemoDate.UTC = R.UTC; DemoDate.prototype = R.prototype;
+  window.Date = DemoDate;
+
+  function ilmoita(teksti) {
+    var el = document.querySelector('.demo-ilmoitus');
+    if (!el) { el = document.createElement('div'); el.className = 'demo-ilmoitus'; el.setAttribute('role', 'status'); document.body.appendChild(el); }
+    el.textContent = teksti; el.hidden = false;
+    clearTimeout(ilmoita.ajastin); ilmoita.ajastin = setTimeout(function () { el.hidden = true; }, 4500);
+  }
+  // Tehtävälinkit osoittavat koulun itslearningiin keksittyihin tehtäviin: demossa niitä ei avata.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="itslearning.com"]');
+    if (!a) return;
+    e.preventDefault(); e.stopPropagation();
+    ilmoita('Demossa tehtävälinkit eivät avaudu. Oikeassa polussa linkki avaa tehtävän itslearningissa.');
+  }, true);
+
+  function maanantai(iso) {  // 2026-W47 -> 2026-11-16
+    var o = iso.split('-W'), v = +o[0], n = +o[1], j4 = new R(v, 0, 4), d = new R(v, 0, 4 - ((j4.getDay() + 6) % 7) + (n - 1) * 7);
+    return d;
+  }
+  function isoPv(d, lisa) { d = new R(d.getTime()); d.setDate(d.getDate() + lisa);
+    return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function aseta(uusi) {
+    var D = document.querySelector('main.sivu').dataset;
+    var avain = 'viikkopolku:' + D.pseudonyymi + ':' + D.toteutus + ':' + D.aikataulu;
+    var merk = {}, jaksot = [].slice.call(document.querySelectorAll('input.jakso'));
+    var valmiit = { aloitus: [], aikataulussa: ['2026-W45', '2026-W46'], jaljessa: ['2026-W45'] }[uusi];
+    jaksot.forEach(function (j) { if (valmiit.indexOf(j.dataset.vk) >= 0) merk[j.dataset.id] = isoPv(maanantai(j.dataset.vk), 3); });
+    if (uusi === 'aikataulussa') {  // torstaina viikosta on kulunut 2/4 opiskelupäivää (keskiviikko on YTO-päivä)
+      var vk47 = jaksot.filter(function (j) { return j.dataset.vk === '2026-W47'; });
+      var summa = 0, raja = vk47.reduce(function (s, j) { return s + +j.dataset.min; }, 0) / 2 - 5;
+      vk47.forEach(function (j) { if (summa < raja) { merk[j.dataset.id] = '2026-11-17'; summa += +j.dataset.min; } });
+    }
+    try {
+      [avain, avain + ':ui', avain + ':tarkistukset', avain + ':siirrot'].forEach(function (k) { window.localStorage.removeItem(k); });
+      if (uusi !== 'aloitus') {
+        window.localStorage.setItem(avain, JSON.stringify({ v: 1, merkinnat: merk }));
+        window.localStorage.setItem(avain + ':ui', JSON.stringify({ v: 1, ensinNahty: '2026-11-02', vihjeSuljettu: true, viimeisinViikko: '2026-W47' }));
+      }
+      window.localStorage.setItem(AVAIN_DEMO, uusi);
+    } catch (e) {
+      ilmoita('Selain ei salli tallennusta, joten tilanteen vaihto ei onnistu. Kokeile toisessa selaimessa.');
+      return;
+    }
+    window.location.reload();
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.demo-nauha [data-tilanne]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.tilanne === valittu));
+      b.addEventListener('click', function () { aseta(b.dataset.tilanne); });
+    });
+    var pv = document.getElementById('demo-paiva');
+    if (pv) pv.textContent = TILANTEET[valittu].teksti;
+  });
+})();
+</script>
+</head>
+<body>
+<div class="demo-nauha" role="region" aria-label="Demon ohjaus"><div class="sisus">
+<p><span class="merkki">Esimerkki</span>Keksitty opiskelija ja kurssi. Päivä on lukittu: <strong id="demo-paiva">ma 2.11.2026</strong>.</p>
+<div class="tilanteet" role="group" aria-label="Näytä tilanne"><span>Näytä:</span>
+<button type="button" data-tilanne="aloitus">Ensimmäinen päivä</button>
+<button type="button" data-tilanne="aikataulussa">Viikko 3, aikataulussa</button>
+<button type="button" data-tilanne="jaljessa">Viikko 3, jäljessä</button></div>
+<a href="index.html">← Esittely</a>
+</div></div>
+<main class="sivu" data-pseudonyymi="opp-k7x2" data-toteutus="20481" data-aikataulu="dd4b669a9dc1" data-polku-luotu="2026-10-30T13:45:00+02:00" data-polku-sha="sha256:a9a2e323d7e3778eb9813d5b037103b4e60b1d11b111872ae43ea82d6539589a" data-paivakiintio="38" data-opiskelupaivat="ma,ti,to,pe" data-aloitus="2026-11-02">
+<header class="kansi"><p class="ylaotsikko">Oma viikkoaikataulu</p><h1 title="Web-ohjelmoinnin perusteet, syksy 2026">Verkkosivujen toteuttaminen (Demo)</h1><p class="vihje" id="vihje" hidden><span>Ylimpänä näet aina seuraavan tehtävän. Kun olet tehnyt osan, merkitse se tehdyksi.</span><button type="button" class="vihje-sulje" data-toiminto="sulje-vihje" aria-label="Sulje ohje">×</button></p></header>
+<section class="nyt" id="nyt" aria-labelledby="nyt-merkki"><p class="nyt-merkki" id="nyt-merkki">Nyt</p><p class="nyt-ilmoitus" id="nyt-ilmoitus" role="status" aria-live="polite"></p><div class="nyt-sisalto" id="nyt-sisalto"><h2 class="nyt-otsikko" id="nyt-otsikko" tabindex="-1">Tervetuloa kurssille</h2><p class="nyt-kuvaus">Saat yleiskuvan siitä, mitä kurssilla tehdään ja missä järjestyksessä. Tiedät sen jälkeen, mitä tarvitset työskentelyyn.</p><p class="nyt-jakso"><strong>Lue materiaali</strong></p><p>Noin 5 min.</p><p class="nyt-toiminnot"><a class="nappi" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70001" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="nyt-huom">Merkitse tehdyt osat tehtävälistaan alempana.</p></div></section>
+<div class="kesken-viikot" id="kesken-viikot" hidden><p class="lohko-merkki">Viime viikolta kesken</p></div>
+<div class="tama-viikko" id="tama-viikko"><p class="lohko-merkki">Tämä viikko</p><section class="viikko" id="vk-2026-W45" data-viikko="2026-W45" data-alkaa="2026-11-02" data-paattyy="2026-11-08" data-nro="45" aria-labelledby="vk-2026-W45-otsikko" data-opnro="1" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2026-W45-otsikko"><span class="vk-nimi">Viikko <span class="num">45</span></span> <span class="pvm"><time datetime="2026-11-02">2.11.</time>–<time datetime="2026-11-08">8.11.2026</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">1</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2026-W45:el-70001" style="flex-grow:5"></span><span class="vk-pala" data-kortti="2026-W45:el-70002" style="flex-grow:40"></span><span class="vk-pala" data-kortti="2026-W45:el-70003" style="flex-grow:25"></span><span class="vk-pala" data-kortti="2026-W45:el-70005" style="flex-grow:20"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2026-W45-avaaja" aria-expanded="true" aria-controls="vk-2026-W45-sisalto" aria-describedby="vk-2026-W45-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2026-W45-sisalto"><p class="tavoite">Tällä viikolla tutustut kurssin kulkuun ja opit, miten HTML-dokumentti rakennetaan. <span class="tavoite-loppu" id="vk-2026-W45-tavoite">Harjoittelet otsikoiden, kappaleiden ja listojen kirjoittamista, jotta sivun sisältö on selkeästi jäsennelty. Aloitat myös harjoituksen, jossa korjaat valmiin esittelysivun. Esittelysivun korjaaminen jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2026-W45-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2026-11-04">4.11.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2026-W45:el-70001" data-vk="2026-W45" data-otsikko="Tervetuloa kurssille" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70001" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W45-1" aria-expanded="true" aria-controls="ks-2026-W45-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Tervetuloa kurssille">Tervetuloa kurssille</span></span><span class="meta"><span class="kortti-pv">ma</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">5</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W45-1"><p class="kuvaus">Saat yleiskuvan siitä, mitä kurssilla tehdään ja missä järjestyksessä. Tiedät sen jälkeen, mitä tarvitset työskentelyyn.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70001" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W45:el-70001:1" data-id="2026-W45:el-70001:1" data-vk="2026-W45" data-osa="el-70001" data-min="5" data-vaihe="lukeminen" data-nimi="Lue materiaali" data-lyhyt="Osa" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">5</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W45:el-70002" data-vk="2026-W45" data-otsikko="HTML-dokumentin rakenne" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70002" data-jarjestys="2"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W45-2" aria-expanded="true" aria-controls="ks-2026-W45-2"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">2.</span> <span class="tehtava-otsikko" title="HTML-dokumentin rakenne">HTML-dokumentin rakenne</span></span><span class="meta"><span class="kortti-pv">ma</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">40</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W45-2"><p class="kuvaus">Tutustut siihen, miten verkkosivun HTML-dokumentti on rakennettu. Opit tunnistamaan rungon osat, joiden varaan kaikki muu rakentuu.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70002" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="kortti-osat"><span class="kortti-edistys">0/2 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W45:el-70002:1" data-id="2026-W45:el-70002:1" data-vk="2026-W45" data-osa="el-70002" data-min="20" data-vaihe="lukeminen" data-nimi="Osa 1/2: Lue materiaali" data-lyhyt="Osa 1/2" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 1/2: Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W45:el-70002:2" data-id="2026-W45:el-70002:2" data-vk="2026-W45" data-osa="el-70002" data-min="20" data-vaihe="ohjattu_harjoittelu" data-nimi="Osa 2/2: Tee harjoitus ohjeen mukaan" data-lyhyt="Osa 2/2" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 2/2: Tee harjoitus ohjeen mukaan</strong></span><span class="meta"><span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><p class="tauko-ohje" hidden>Katso video ensin loppuun, pidä lyhyt tauko ja tee vasta sitten Kokeile itse -vaiheet.</p><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W45:el-70003" data-vk="2026-W45" data-otsikko="Otsikot, kappaleet ja listat" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70003" data-jarjestys="3"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W45-3" aria-expanded="true" aria-controls="ks-2026-W45-3"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">3.</span> <span class="tehtava-otsikko" title="Otsikot, kappaleet ja listat">Otsikot, kappaleet ja listat</span></span><span class="meta"><span class="kortti-pv">ma–ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">25</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W45-3"><p class="kuvaus">Opit merkitsemään otsikot, kappaleet ja luettelot oikein. Niillä saat sivun sisällön jäsenneltyä selkeästi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70003" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="kortti-osat"><span class="kortti-edistys">0/2 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W45:el-70003:1" data-id="2026-W45:el-70003:1" data-vk="2026-W45" data-osa="el-70003" data-min="5" data-vaihe="lukeminen" data-nimi="Osa 1/2: Lue materiaali" data-lyhyt="Osa 1/2" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 1/2: Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">5</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W45:el-70003:2" data-id="2026-W45:el-70003:2" data-vk="2026-W45" data-osa="el-70003" data-min="20" data-vaihe="ohjattu_harjoittelu" data-nimi="Osa 2/2: Tee harjoitus ohjeen mukaan" data-lyhyt="Osa 2/2" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 2/2: Tee harjoitus ohjeen mukaan</strong></span><span class="meta"><span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><p class="tauko-ohje" hidden>Lue sivu kahdessa osassa: ensin otsikot, kappaleet ja listat, sitten tauko ja vasta sen jälkeen rakenne-elementit (header, nav, main, section, article, footer).</p><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W45:el-70005" data-vk="2026-W45" data-otsikko="Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70005" data-jatkuu-vk="46" data-jarjestys="4"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W45-4" aria-expanded="true" aria-controls="ks-2026-W45-4"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">4.</span> <span class="tehtava-otsikko" title="Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu">Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu</span></span><span class="meta"><span class="kortti-pv">ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">20</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W45-4"><p class="kuvaus">Korjaat valmiin sivun rakenteen niin, että elementit kertovat tarkoituksensa. Saat harjoitusta semanttiseen merkintään ennen omaa työtä.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70005" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: osat 1–2/5. Loput jatkuvat viikolla 46.</p><p class="kortti-osat"><span class="kortti-edistys">0/2 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W45:el-70005:1" data-id="2026-W45:el-70005:1" data-vk="2026-W45" data-osa="el-70005" data-min="5" data-vaihe="lukeminen" data-nimi="Osa 1/5: Lue materiaali" data-lyhyt="Osa 1/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 1/5: Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">5</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W45:el-70005:2" data-id="2026-W45:el-70005:2" data-vk="2026-W45" data-osa="el-70005" data-min="15" data-vaihe="ohjattu_harjoittelu" data-nimi="Osa 2/5: Tee harjoitus ohjeen mukaan" data-lyhyt="Osa 2/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 2/5: Tee harjoitus ohjeen mukaan</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Ensimmäinen askel</p><p>Avaa esittely.html VS Codessa ja etsi rivi &lt;div class=&quot;yla&quot;&gt;. Vaihda sana div sanaksi header sekä alussa että lopussa. Tallenna ja avaa sivu selaimessa.</p></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section></div>
+<section class="lohko koko" aria-labelledby="koko-otsikko" data-yht="10"><p class="lohko-merkki">Koko kurssi</p><h2 class="lohko-otsikko" id="koko-otsikko"><span class="num">10</span> opiskeluviikkoa</h2><p class="koko-tieto">Arvioitu valmistuminen tiistaina <time datetime="2027-01-19">19.1.2027</time>, viikko <span class="num">3</span>.</p><ol class="nauha" aria-label="Kurssin viikot"><li><a class="nauha-ruutu nauha-vk" href="#vk-2026-W45" data-vk="2026-W45" aria-label="Viikko 45">45</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2026-W46" data-vk="2026-W46" aria-label="Viikko 46">46</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2026-W47" data-vk="2026-W47" aria-label="Viikko 47">47</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2026-W48" data-vk="2026-W48" aria-label="Viikko 48">48</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2026-W49" data-vk="2026-W49" aria-label="Viikko 49">49</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2026-W50" data-vk="2026-W50" aria-label="Viikko 50">50</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2026-W51" data-vk="2026-W51" aria-label="Viikko 51">51</a></li><li class="nauha-loma"><span class="nauha-ruutu" title="Loma, viikot 52–53">loma</span></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2027-W01" data-vk="2027-W01" aria-label="Viikko 1">1</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2027-W02" data-vk="2027-W02" aria-label="Viikko 2">2</a></li><li><a class="nauha-ruutu nauha-vk" href="#vk-2027-W03" data-vk="2027-W03" aria-label="Viikko 3">3</a></li></ol><button type="button" class="avaaja lohko-avaaja kaikki-avaaja" id="kaikki-otsikko" aria-expanded="true" aria-controls="kaikki-viikot">Kaikki viikot<span class="avaus-merkki" aria-hidden="true"></span></button><div class="kaikki-viikot" id="kaikki-viikot"><dl class="tiedot"><div><dt>Aloitus</dt><dd><time datetime="2026-11-02">2.11.2026</time></dd></div><div><dt>Arvioitu valmistuminen</dt><dd>tiistaina <time datetime="2027-01-19">19.1.2027</time>, viikko <span class="num">3</span></dd></div><div><dt>Opiskeluviikkoja</dt><dd><span class="num">10</span></dd></div><div><dt>Lomaviikot</dt><dd><span class="num">52</span>–<span class="num">53</span></dd></div><div><dt>Tarkistus opettajan kanssa</dt><dd>joka opiskeluviikko</dd></div></dl><div class="viikot aikajana" id="viikot"><section class="viikko" id="vk-2026-W46" data-viikko="2026-W46" data-alkaa="2026-11-09" data-paattyy="2026-11-15" data-nro="46" aria-labelledby="vk-2026-W46-otsikko" data-opnro="2" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2026-W46-otsikko"><span class="vk-nimi">Viikko <span class="num">46</span></span> <span class="pvm"><time datetime="2026-11-09">9.11.</time>–<time datetime="2026-11-15">15.11.2026</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">2</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2026-W46:el-70005" style="flex-grow:45"></span><span class="vk-pala" data-kortti="2026-W46:el-70006" style="flex-grow:45"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2026-W46-avaaja" aria-expanded="true" aria-controls="vk-2026-W46-sisalto" aria-describedby="vk-2026-W46-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2026-W46-sisalto"><p class="tavoite">Tällä viikolla saat valmiiksi esittelysivun korjaamisen: ohjatun harjoittelun jälkeen teet muutokset itse ja palautat työn. <span class="tavoite-loppu" id="vk-2026-W46-tavoite">Siirryt sitten CSS:n pariin ja opit, miten valitsimilla ja ominaisuuksilla muotoillaan sivun ulkoasua. Luet CSS:n perusteet ja kokeilet niitä ohjatusti. Valitsimien ja ominaisuuksien harjoittelu jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2026-W46-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2026-11-11">11.11.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2026-W46:el-70005" data-vk="2026-W46" data-otsikko="Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70005" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W46-1" aria-expanded="true" aria-controls="ks-2026-W46-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu">Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu</span></span><span class="meta"><span class="kortti-pv">ma</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">45</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W46-1"><p class="kuvaus">Korjaat valmiin sivun rakenteen niin, että elementit kertovat tarkoituksensa. Saat harjoitusta semanttiseen merkintään ennen omaa työtä.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70005" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="kortti-osat"><span class="kortti-edistys">0/3 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W46:el-70005:1" data-id="2026-W46:el-70005:1" data-vk="2026-W46" data-osa="el-70005" data-min="15" data-vaihe="ohjattu_harjoittelu" data-nimi="Osa 3/5: Tee harjoitus ohjeen mukaan" data-lyhyt="Osa 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 3/5: Tee harjoitus ohjeen mukaan</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W46:el-70005:2" data-id="2026-W46:el-70005:2" data-vk="2026-W46" data-osa="el-70005" data-min="15" data-vaihe="itsenainen_tuottaminen" data-nimi="Osa 4/5: Tee tehtävä" data-lyhyt="Osa 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 4/5: Tee tehtävä</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W46:el-70005:3" data-id="2026-W46:el-70005:3" data-vk="2026-W46" data-osa="el-70005" data-min="15" data-vaihe="palautus" data-nimi="Osa 5/5: Viimeistele ja palauta" data-lyhyt="Osa 5/5" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 5/5: Viimeistele ja palauta</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki valmis-kun"><p class="tuki-otsikko">Valmis, kun</p><ol class="ruutulista"><li><span class="ruutu" aria-hidden="true"></span><span>header, nav, main ja footer ovat paikoillaan</span></li><li><span class="ruutu" aria-hidden="true"></span><span>valikon linkit ovat listassa</span></li><li><span class="ruutu" aria-hidden="true"></span><span>otsikot ovat h2-elementtejä</span></li><li><span class="ruutu" aria-hidden="true"></span><span>harrastukset ovat ul-listassa</span></li><li><span class="ruutu" aria-hidden="true"></span><span>sivulla on oma section</span></li><li><span class="ruutu" aria-hidden="true"></span><span>sivu näyttää selaimessa samalta kuin alussa.</span></li></ol></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W46:el-70006" data-vk="2026-W46" data-otsikko="Valitsimet ja ominaisuudet" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70006" data-jatkuu-vk="47" data-jarjestys="2"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W46-2" aria-expanded="true" aria-controls="ks-2026-W46-2"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">2.</span> <span class="tehtava-otsikko" title="Valitsimet ja ominaisuudet">Valitsimet ja ominaisuudet</span></span><span class="meta"><span class="kortti-pv">ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">45</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W46-2"><p class="kuvaus">Opit, miten CSS-sääntö valitsee elementit ja muuttaa niiden ulkoasua. Saat pohjan sivusi muotoiluun.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70006" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: osat 1–3/4. Loput jatkuvat viikolla 47.</p><p class="kortti-osat"><span class="kortti-edistys">0/3 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W46:el-70006:1" data-id="2026-W46:el-70006:1" data-vk="2026-W46" data-osa="el-70006" data-min="15" data-vaihe="lukeminen" data-nimi="Osa 1/4: Lue materiaali" data-lyhyt="Osa 1/4" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 1/4: Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W46:el-70006:2" data-id="2026-W46:el-70006:2" data-vk="2026-W46" data-osa="el-70006" data-min="15" data-vaihe="lukeminen" data-nimi="Osa 2/4: Lue materiaali" data-lyhyt="Osa 2/4" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 2/4: Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W46:el-70006:3" data-id="2026-W46:el-70006:3" data-vk="2026-W46" data-osa="el-70006" data-min="15" data-vaihe="ohjattu_harjoittelu" data-nimi="Osa 3/4: Tee harjoitus ohjeen mukaan" data-lyhyt="Osa 3/4" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 3/4: Tee harjoitus ohjeen mukaan</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Jos jumitut</p><p>Jos tyylit eivät näy:</p><ol><li><span>tarkista, että tiedoston nimi on tyyli.css</span></li><li><span>tarkista link-elementin href</span></li><li><span>tallenna molemmat tiedostot ja päivitä selain.</span></li></ol></div><p class="tauko-ohje" hidden>Katso video kahdessa osassa: ensin 0–6 min, sitten tee vaiheet 1–3; sen jälkeen video 6–12 min ja vaiheet 4–5.</p><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko" id="vk-2026-W47" data-viikko="2026-W47" data-alkaa="2026-11-16" data-paattyy="2026-11-22" data-nro="47" aria-labelledby="vk-2026-W47-otsikko" data-opnro="3" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2026-W47-otsikko"><span class="vk-nimi">Viikko <span class="num">47</span></span> <span class="pvm"><time datetime="2026-11-16">16.11.</time>–<time datetime="2026-11-22">22.11.2026</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">3</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2026-W47:el-70006" style="flex-grow:10"></span><span class="vk-pala" data-kortti="2026-W47:el-70007" style="flex-grow:65"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2026-W47-avaaja" aria-expanded="true" aria-controls="vk-2026-W47-sisalto" aria-describedby="vk-2026-W47-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2026-W47-sisalto"><p class="tavoite">Tällä viikolla saat valmiiksi valitsimien ja ominaisuuksien ohjatun harjoittelun. <span class="tavoite-loppu" id="vk-2026-W47-tavoite">Sen jälkeen harjoittelet värien ja fonttien käyttöä: katsot ensin esimerkit, teet ohjatun harjoituksen ja muotoilet sitten oman sivusi itse. Värien ja fonttien harjoitus jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2026-W47-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2026-11-18">18.11.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2026-W47:el-70006" data-vk="2026-W47" data-otsikko="Valitsimet ja ominaisuudet" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70006" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W47-1" aria-expanded="true" aria-controls="ks-2026-W47-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Valitsimet ja ominaisuudet">Valitsimet ja ominaisuudet</span></span><span class="meta"><span class="kortti-pv">ma</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">10</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W47-1"><p class="kuvaus">Opit, miten CSS-sääntö valitsee elementit ja muuttaa niiden ulkoasua. Saat pohjan sivusi muotoiluun.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70006" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W47:el-70006:1" data-id="2026-W47:el-70006:1" data-vk="2026-W47" data-osa="el-70006" data-min="10" data-vaihe="ohjattu_harjoittelu" data-nimi="Osa 4/4: Tee harjoitus ohjeen mukaan" data-lyhyt="Osa 4/4" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 4/4: Tee harjoitus ohjeen mukaan</strong></span><span class="meta"><span class="nw"><span class="num">10</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W47:el-70007" data-vk="2026-W47" data-otsikko="Harjoitus: värit ja fontit" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70007" data-jatkuu-vk="48" data-jarjestys="2"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W47-2" aria-expanded="true" aria-controls="ks-2026-W47-2"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">2.</span> <span class="tehtava-otsikko" title="Harjoitus: värit ja fontit">Harjoitus: värit ja fontit</span></span><span class="meta"><span class="kortti-pv">ma–ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">65</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W47-2"><p class="kuvaus">Muotoilet oman esittelysivusi värit, fontit ja valikon. Teet myös ensimmäisen oman tyyliluokkasi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70007" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: osat 1–4/5. Loput jatkuvat viikolla 48.</p><p class="kortti-osat"><span class="kortti-edistys">0/4 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W47:el-70007:1" data-id="2026-W47:el-70007:1" data-vk="2026-W47" data-osa="el-70007" data-min="5" data-vaihe="lukeminen" data-nimi="Osa 1/5: Lue materiaali" data-lyhyt="Osa 1/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 1/5: Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">5</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W47:el-70007:2" data-id="2026-W47:el-70007:2" data-vk="2026-W47" data-osa="el-70007" data-min="20" data-vaihe="ohjattu_harjoittelu" data-nimi="Osa 2/5: Tee harjoitus ohjeen mukaan" data-lyhyt="Osa 2/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 2/5: Tee harjoitus ohjeen mukaan</strong></span><span class="meta"><span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W47:el-70007:3" data-id="2026-W47:el-70007:3" data-vk="2026-W47" data-osa="el-70007" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Osa 3/5: Tee tehtävä" data-lyhyt="Osa 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 3/5: Tee tehtävä</strong></span><span class="meta"><span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W47:el-70007:4" data-id="2026-W47:el-70007:4" data-vk="2026-W47" data-osa="el-70007" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Osa 4/5: Tee tehtävä" data-lyhyt="Osa 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 4/5: Tee tehtävä</strong></span><span class="meta"><span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Ensimmäinen askel</p><p>Avaa tyyli.css ja kirjoita body-sääntöön rivi font-family: Arial, sans-serif; Tallenna ja tarkista selaimesta, että fontti vaihtui.</p></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko" id="vk-2026-W48" data-viikko="2026-W48" data-alkaa="2026-11-23" data-paattyy="2026-11-29" data-nro="48" aria-labelledby="vk-2026-W48-otsikko" data-opnro="4" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2026-W48-otsikko"><span class="vk-nimi">Viikko <span class="num">48</span></span> <span class="pvm"><time datetime="2026-11-23">23.11.</time>–<time datetime="2026-11-29">29.11.2026</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">4</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2026-W48:el-70007" style="flex-grow:15"></span><span class="vk-pala" data-kortti="2026-W48:tuki-014" style="flex-grow:15"></span><span class="vk-pala" data-kortti="2026-W48:el-70010" style="flex-grow:20"></span><span class="vk-pala" data-kortti="2026-W48:tuki-015" style="flex-grow:5"></span><span class="vk-pala" data-kortti="2026-W48:tuki-016" style="flex-grow:15"></span><span class="vk-pala" data-kortti="2026-W48:tuki-017" style="flex-grow:15"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2026-W48-avaaja" aria-expanded="true" aria-controls="vk-2026-W48-sisalto" aria-describedby="vk-2026-W48-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2026-W48-sisalto"><p class="tavoite">Tällä viikolla viimeistelet värien ja fonttien harjoituksen ja palautat sen. <span class="tavoite-loppu" id="vk-2026-W48-tavoite">Tutustut sen jälkeen pienyrityksen kotisivun lopputyöhön ja katsot, mitä sivuilta odotetaan. Lopputyössä osoitat arvioitavassa tehtävässä, että osaat rakentaa sivun HTML:llä, muotoilla sen CSS:llä ja testata työsi. Kirjoitat työstäsi myös kuvauksen ja arvioit omaa osaamistasi.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2026-W48-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2026-11-25">25.11.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2026-W48:el-70007" data-vk="2026-W48" data-otsikko="Harjoitus: värit ja fontit" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70007" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W48-1" aria-expanded="true" aria-controls="ks-2026-W48-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Harjoitus: värit ja fontit">Harjoitus: värit ja fontit</span></span><span class="meta"><span class="kortti-pv">ma</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">15</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W48-1"><p class="kuvaus">Muotoilet oman esittelysivusi värit, fontit ja valikon. Teet myös ensimmäisen oman tyyliluokkasi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70007" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W48:el-70007:1" data-id="2026-W48:el-70007:1" data-vk="2026-W48" data-osa="el-70007" data-min="15" data-vaihe="palautus" data-nimi="Osa 5/5: Viimeistele ja palauta" data-lyhyt="Osa 5/5" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Osa 5/5: Viimeistele ja palauta</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki valmis-kun"><p class="tuki-otsikko">Valmis, kun</p><ol class="ruutulista"><li><span class="ruutu" aria-hidden="true"></span><span>sivulla on käytössä kaksi väriä</span></li><li><span class="ruutu" aria-hidden="true"></span><span>kaikissa teksteissä on sama fontti</span></li><li><span class="ruutu" aria-hidden="true"></span><span>valikko on muotoiltu</span></li><li><span class="ruutu" aria-hidden="true"></span><span>sinulla on yksi oma luokka</span></li><li><span class="ruutu" aria-hidden="true"></span><span>molemmat tiedostot on palautettu.</span></li></ol></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W48:tuki-014" data-vk="2026-W48" data-otsikko="Välitarkistus: HTML ja CSS" data-jarjestys="2"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W48-2" aria-expanded="true" aria-controls="ks-2026-W48-2"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">2.</span> <span class="tehtava-otsikko" title="Välitarkistus: HTML ja CSS">Välitarkistus: HTML ja CSS</span></span><span class="meta"><span class="kortti-pv">ma</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">15</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W48-2"><p class="kuvaus">Näytät opettajalle tähänastiset työsi ja käytte yhdessä läpi, mitä lopputyössä vielä tarvitaan. Saat varmuuden siitä, että olet oikeilla jäljillä.</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W48:tuki-014:1" data-id="2026-W48:tuki-014:1" data-vk="2026-W48" data-osa="tuki-014" data-min="15" data-vaihe="palautus" data-nimi="Tarkistus opettajan kanssa" data-lyhyt="Osa" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Tarkistus opettajan kanssa</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Mitä tehdään</p><p>Näytä opettajalle korjattu esittelysivu ja värit ja fontit -harjoitus. Käydään yhdessä läpi, mitä lopputyössä tarvitaan.</p></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W48:el-70010" data-vk="2026-W48" data-otsikko="Lopputyön ohje: pienyrityksen kotisivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70010" data-arvioitava="1" data-jarjestys="3"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W48-3" aria-expanded="true" aria-controls="ks-2026-W48-3"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">3.</span> <span class="tehtava-otsikko" title="Lopputyön ohje: pienyrityksen kotisivu">Lopputyön ohje: pienyrityksen kotisivu</span> <span class="arvioitava">Arvioitava</span></span><span class="meta"><span class="kortti-pv">ma</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">20</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W48-3"><p class="kuvaus">Tutustut lopputyön vaatimuksiin: mitä sivustolla pitää olla ja mistä arviointi muodostuu. Saat pohjan lopputyön suunnitteluun.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70010" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W48:el-70010:1" data-id="2026-W48:el-70010:1" data-vk="2026-W48" data-osa="el-70010" data-min="20" data-vaihe="lukeminen" data-nimi="Lue materiaali" data-lyhyt="Osa" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Lue materiaali</strong></span><span class="meta"><span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Ensimmäinen askel</p><p>Lue ensin vain vaihe 1. Jos oma yritysidea ei tule mieleen, valitse jokin näistä: kahvila, pyöräkorjaamo tai kampaamo.</p></div><div class="tuki"><p class="tuki-otsikko">Vaiheittain</p><p>Lopputyö viidessä vaiheessa:</p><ol><li><span>Valitse yritys ja kirjoita, mitä sivuilla kerrotaan.</span></li><li><span>Tee etusivu ja näytä se opettajalle.</span></li><li><span>Tee kaksi alasivua ja yhteinen valikko.</span></li><li><span>Tee tyylitiedosto ja muotoile kaikki sivut.</span></li><li><span>Validoi sivut, kirjoita kuvaus ja itsearviointi.</span></li></ol></div><div class="tuki valmis-kun"><p class="tuki-otsikko">Valmis, kun</p><p>Tämä osa on valmis, kun olet lukenut vaiheet 1–5, valinnut yrityksen ja kirjoittanut sen nimen muistiin.</p></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W48:tuki-015" data-vk="2026-W48" data-otsikko="Jos jumitut lopputyössä" data-jarjestys="4"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W48-4" aria-expanded="true" aria-controls="ks-2026-W48-4"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">4.</span> <span class="tehtava-otsikko" title="Jos jumitut lopputyössä">Jos jumitut lopputyössä</span></span><span class="meta"><span class="kortti-pv">ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">5</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W48-4"><p class="kuvaus">Saat ohjeet siihen, mitä teet, kun lopputyö pysähtyy. Pääset takaisin vauhtiin ilman, että jäät odottamaan.</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W48:tuki-015:1" data-id="2026-W48:tuki-015:1" data-vk="2026-W48" data-osa="tuki-015" data-min="5" data-vaihe="lukeminen" data-nimi="Lue ohje ennen kuin jatkat" data-lyhyt="Osa" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Lue ohje ennen kuin jatkat</strong></span><span class="meta"><span class="nw"><span class="num">5</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Jos jumitut</p><p>Jos jäät jumiin:</p><ol><li><span>Lue validaattorin tai selaimen ilmoitus ääneen.</span></li><li><span>Vertaa koodiasi aiemman harjoituksen koodiin.</span></li><li><span>Jos et pääse eteenpäin viidessä minuutissa, kirjoita opettajalle itslearningin viestiin yksi lause: mitä yritit ja mitä tapahtui. Jatka sillä välin seuraavasta vaiheesta.</span></li></ol></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W48:tuki-016" data-vk="2026-W48" data-otsikko="Lopputyön ensimmäinen askel" data-jarjestys="5"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W48-5" aria-expanded="true" aria-controls="ks-2026-W48-5"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">5.</span> <span class="tehtava-otsikko" title="Lopputyön ensimmäinen askel">Lopputyön ensimmäinen askel</span></span><span class="meta"><span class="kortti-pv">ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">15</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W48-5"><p class="kuvaus">Teet lopputyön ensimmäisen pienen askeleen ja näet heti, että pohja toimii. Jatkaminen on sen jälkeen helpompaa.</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W48:tuki-016:1" data-id="2026-W48:tuki-016:1" data-vk="2026-W48" data-osa="tuki-016" data-min="15" data-vaihe="ohjattu_harjoittelu" data-nimi="Tee ensimmäinen askel" data-lyhyt="Osa" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Tee ensimmäinen askel</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Näin aloitat</p><p>Luo kansio lopputyo ja sinne tiedosto index.html. Kopioi siihen HTML-pohja sivulta HTML-dokumentin rakenne ja kirjoita h1-otsikoksi valitsemasi yrityksen nimi. Tallenna ja avaa sivu selaimessa. Tämä askel on valmis, kun näet yrityksen nimen selaimessa.</p></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li><li class="tehtava-rivi kohde" data-kortti="2026-W48:tuki-017" data-vk="2026-W48" data-otsikko="Välitarkistus: lopputyön suunnitelma" data-jarjestys="6"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W48-6" aria-expanded="true" aria-controls="ks-2026-W48-6"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">6.</span> <span class="tehtava-otsikko" title="Välitarkistus: lopputyön suunnitelma">Välitarkistus: lopputyön suunnitelma</span></span><span class="meta"><span class="kortti-pv">ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">15</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W48-6"><p class="kuvaus">Käyt opettajan kanssa läpi valitsemasi yrityksen ja sivujen sisällön. Sovitte, milloin etusivu on valmis katsottavaksi.</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W48:tuki-017:1" data-id="2026-W48:tuki-017:1" data-vk="2026-W48" data-osa="tuki-017" data-min="15" data-vaihe="palautus" data-nimi="Tarkistus opettajan kanssa" data-lyhyt="Osa" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Tarkistus opettajan kanssa</strong></span><span class="meta"><span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki"><p class="tuki-otsikko">Mitä tehdään</p><p>Näytä opettajalle, minkä yrityksen valitsit. Sovitaan samalla, mitä kullakin sivulla kerrotaan (lopputyön vaihe 1) ja milloin katsotaan valmis etusivu.</p></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko" id="vk-2026-W49" data-viikko="2026-W49" data-alkaa="2026-11-30" data-paattyy="2026-12-06" data-nro="49" aria-labelledby="vk-2026-W49-otsikko" data-opnro="5" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2026-W49-otsikko"><span class="vk-nimi">Viikko <span class="num">49</span></span> <span class="pvm"><time datetime="2026-11-30">30.11.</time>–<time datetime="2026-12-06">6.12.2026</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">5</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2026-W49:el-70011" style="flex-grow:80"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2026-W49-avaaja" aria-expanded="true" aria-controls="vk-2026-W49-sisalto" aria-describedby="vk-2026-W49-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2026-W49-sisalto"><p class="tavoite">Tällä viikolla aloitat pienyrityksen kotisivun tekemisen. <span class="tavoite-loppu" id="vk-2026-W49-tavoite">Valitset ensin yrityksen ja kirjoitat, mitä sivuilla kerrotaan, ja aloitat sen jälkeen etusivun. Osoitat osaamistasi arvioitavassa lopputyössä. Lopputyö jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2026-W49-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2026-12-02">2.12.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2026-W49:el-70011" data-vk="2026-W49" data-otsikko="Lopputyö: pienyrityksen kotisivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" data-arvioitava="1" data-jatkuu-vk="50" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W49-1" aria-expanded="true" aria-controls="ks-2026-W49-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Lopputyö: pienyrityksen kotisivu">Lopputyö: pienyrityksen kotisivu</span> <span class="arvioitava">Arvioitava</span></span><span class="meta"><span class="kortti-pv">ma–ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">80</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W49-1"><p class="kuvaus">Teet pienyritykselle kotisivun vaihe vaiheelta etusivusta alasivuihin ja tyyleihin. Lopuksi validoit sivut ja palautat työn arvioitavaksi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan, Tee etusivu ja näytä se opettajalle. Loput jatkuvat viikolla 50.</p><p class="kortti-osat"><span class="kortti-edistys">0/4 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W49:el-70011:1" data-id="2026-W49:el-70011:1" data-vk="2026-W49" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 1/5: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan" data-lyhyt="Vaihe 1/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 1/5: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan</strong></span><span class="meta"><span class="nw">jakso <span class="num">1</span>/<span class="num">2</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W49:el-70011:2" data-id="2026-W49:el-70011:2" data-vk="2026-W49" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 1/5: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan" data-lyhyt="Vaihe 1/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 1/5: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan</strong></span><span class="meta"><span class="nw">jakso <span class="num">2</span>/<span class="num">2</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W49:el-70011:3" data-id="2026-W49:el-70011:3" data-vk="2026-W49" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 2/5: Tee etusivu ja näytä se opettajalle" data-lyhyt="Vaihe 2/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 2/5: Tee etusivu ja näytä se opettajalle</strong></span><span class="meta"><span class="nw">jakso <span class="num">1</span>/<span class="num">5</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W49:el-70011:4" data-id="2026-W49:el-70011:4" data-vk="2026-W49" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 2/5: Tee etusivu ja näytä se opettajalle" data-lyhyt="Vaihe 2/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 2/5: Tee etusivu ja näytä se opettajalle</strong></span><span class="meta"><span class="nw">jakso <span class="num">2</span>/<span class="num">5</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><p class="tauko-ohje" hidden>Tee lopputyötä enintään 20 minuutin jaksoissa ja pidä jokaisen jakson jälkeen lyhyt tauko. Aikataulussa jokainen rivi on enintään 20 minuuttia.</p><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko" id="vk-2026-W50" data-viikko="2026-W50" data-alkaa="2026-12-07" data-paattyy="2026-12-13" data-nro="50" aria-labelledby="vk-2026-W50-otsikko" data-opnro="6" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2026-W50-otsikko"><span class="vk-nimi">Viikko <span class="num">50</span></span> <span class="pvm"><time datetime="2026-12-07">7.12.</time>–<time datetime="2026-12-13">13.12.2026</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">6</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2026-W50:el-70011" style="flex-grow:90"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2026-W50-avaaja" aria-expanded="true" aria-controls="vk-2026-W50-sisalto" aria-describedby="vk-2026-W50-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2026-W50-sisalto"><p class="tavoite">Tällä viikolla jatkat lopputyötä: saat etusivun valmiiksi ja teet sen jälkeen kaksi alasivua sekä yhteisen valikon. <span class="tavoite-loppu" id="vk-2026-W50-tavoite">Näin sivusto alkaa muodostaa kokonaisuuden, jossa sivujen välillä pääsee liikkumaan. Osoitat HTML:n osaamistasi arvioitavassa lopputyössä. Lopputyö jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2026-W50-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2026-12-09">9.12.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2026-W50:el-70011" data-vk="2026-W50" data-otsikko="Lopputyö: pienyrityksen kotisivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" data-arvioitava="1" data-jatkuu-vk="51" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W50-1" aria-expanded="true" aria-controls="ks-2026-W50-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Lopputyö: pienyrityksen kotisivu">Lopputyö: pienyrityksen kotisivu</span> <span class="arvioitava">Arvioitava</span></span><span class="meta"><span class="kortti-pv">ma–ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">90</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W50-1"><p class="kuvaus">Teet pienyritykselle kotisivun vaihe vaiheelta etusivusta alasivuihin ja tyyleihin. Lopuksi validoit sivut ja palautat työn arvioitavaksi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: Tee etusivu ja näytä se opettajalle, Tee kaksi alasivua ja yhteinen valikko. Loput jatkuvat viikolla 51.</p><p class="kortti-osat"><span class="kortti-edistys">0/5 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W50:el-70011:1" data-id="2026-W50:el-70011:1" data-vk="2026-W50" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 2/5: Tee etusivu ja näytä se opettajalle" data-lyhyt="Vaihe 2/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 2/5: Tee etusivu ja näytä se opettajalle</strong></span><span class="meta"><span class="nw">jakso <span class="num">3</span>/<span class="num">5</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W50:el-70011:2" data-id="2026-W50:el-70011:2" data-vk="2026-W50" data-osa="el-70011" data-min="15" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 2/5: Tee etusivu ja näytä se opettajalle" data-lyhyt="Vaihe 2/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 2/5: Tee etusivu ja näytä se opettajalle</strong></span><span class="meta"><span class="nw">jakso <span class="num">4</span>/<span class="num">5</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W50:el-70011:3" data-id="2026-W50:el-70011:3" data-vk="2026-W50" data-osa="el-70011" data-min="15" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 2/5: Tee etusivu ja näytä se opettajalle" data-lyhyt="Vaihe 2/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 2/5: Tee etusivu ja näytä se opettajalle</strong></span><span class="meta"><span class="nw">jakso <span class="num">5</span>/<span class="num">5</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W50:el-70011:4" data-id="2026-W50:el-70011:4" data-vk="2026-W50" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko" data-lyhyt="Vaihe 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko</strong></span><span class="meta"><span class="nw">jakso <span class="num">1</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W50:el-70011:5" data-id="2026-W50:el-70011:5" data-vk="2026-W50" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko" data-lyhyt="Vaihe 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko</strong></span><span class="meta"><span class="nw">jakso <span class="num">2</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko" id="vk-2026-W51" data-viikko="2026-W51" data-alkaa="2026-12-14" data-paattyy="2026-12-20" data-nro="51" aria-labelledby="vk-2026-W51-otsikko" data-opnro="7" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2026-W51-otsikko"><span class="vk-nimi">Viikko <span class="num">51</span></span> <span class="pvm"><time datetime="2026-12-14">14.12.</time>–<time datetime="2026-12-20">20.12.2026</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">7</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2026-W51:el-70011" style="flex-grow:75"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2026-W51-avaaja" aria-expanded="true" aria-controls="vk-2026-W51-sisalto" aria-describedby="vk-2026-W51-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2026-W51-sisalto"><p class="tavoite">Tällä viikolla viimeistelet alasivut ja yhteisen valikon. <span class="tavoite-loppu" id="vk-2026-W51-tavoite">Valikon avulla sivuston osat toimivat yhdessä, ja sivuston rakenne on valmis muotoiltavaksi. Osoitat osaamistasi arvioitavassa lopputyössä. Lopputyö jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2026-W51-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2026-12-16">16.12.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2026-W51:el-70011" data-vk="2026-W51" data-otsikko="Lopputyö: pienyrityksen kotisivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" data-arvioitava="1" data-jatkuu-vk="1" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2026-W51-1" aria-expanded="true" aria-controls="ks-2026-W51-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Lopputyö: pienyrityksen kotisivu">Lopputyö: pienyrityksen kotisivu</span> <span class="arvioitava">Arvioitava</span></span><span class="meta"><span class="kortti-pv">ma–ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">75</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2026-W51-1"><p class="kuvaus">Teet pienyritykselle kotisivun vaihe vaiheelta etusivusta alasivuihin ja tyyleihin. Lopuksi validoit sivut ja palautat työn arvioitavaksi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: Tee kaksi alasivua ja yhteinen valikko. Loput jatkuvat viikolla 1.</p><p class="kortti-osat"><span class="kortti-edistys">0/4 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W51:el-70011:1" data-id="2026-W51:el-70011:1" data-vk="2026-W51" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko" data-lyhyt="Vaihe 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko</strong></span><span class="meta"><span class="nw">jakso <span class="num">3</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W51:el-70011:2" data-id="2026-W51:el-70011:2" data-vk="2026-W51" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko" data-lyhyt="Vaihe 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko</strong></span><span class="meta"><span class="nw">jakso <span class="num">4</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W51:el-70011:3" data-id="2026-W51:el-70011:3" data-vk="2026-W51" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko" data-lyhyt="Vaihe 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko</strong></span><span class="meta"><span class="nw">jakso <span class="num">5</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2026-W51:el-70011:4" data-id="2026-W51:el-70011:4" data-vk="2026-W51" data-osa="el-70011" data-min="15" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko" data-lyhyt="Vaihe 3/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko</strong></span><span class="meta"><span class="nw">jakso <span class="num">6</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko loma" id="vk-2026-W52" data-viikko="2026-W52" data-alkaa="2026-12-21" data-paattyy="2027-01-03" data-loma="1" aria-labelledby="vk-2026-W52-otsikko"><h2 id="vk-2026-W52-otsikko">Loma <span class="pvm">viikot 52–53</span></h2><p class="tavoite"><time datetime="2026-12-21">21.12.</time>–<time datetime="2027-01-03">3.1.2027</time> – ei opiskelua.</p></section><section class="viikko" id="vk-2027-W01" data-viikko="2027-W01" data-alkaa="2027-01-04" data-paattyy="2027-01-10" data-nro="1" aria-labelledby="vk-2027-W01-otsikko" data-opnro="8" data-kesto="noin 50 minuuttia" data-kesto-gen="noin 50 minuutin" data-tarkistus="1"><h2 id="vk-2027-W01-otsikko"><span class="vk-nimi">Viikko <span class="num">1</span></span> <span class="pvm"><time datetime="2027-01-04">4.1.</time>–<time datetime="2027-01-10">10.1.2027</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">8</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 40 minuuttia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2027-W01:el-70011" style="flex-grow:40"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2027-W01-avaaja" aria-expanded="true" aria-controls="vk-2027-W01-sisalto" aria-describedby="vk-2027-W01-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2027-W01-sisalto"><p class="tavoite">Tällä viikolla jatkat lopputyötä ja teet sivustolle tyylitiedoston. <span class="tavoite-loppu" id="vk-2027-W01-tavoite">Muotoilet CSS:llä kaikki sivut yhtenäisen ulkoasun mukaisesti. Muotoilu osoittaa osaamistasi arvioitavassa lopputyössä. Lopputyö jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2027-W01-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2027-W01:el-70011" data-vk="2027-W01" data-otsikko="Lopputyö: pienyrityksen kotisivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" data-arvioitava="1" data-jatkuu-vk="2" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2027-W01-1" aria-expanded="true" aria-controls="ks-2027-W01-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Lopputyö: pienyrityksen kotisivu">Lopputyö: pienyrityksen kotisivu</span> <span class="arvioitava">Arvioitava</span></span><span class="meta"><span class="kortti-pv">to</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">40</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2027-W01-1"><p class="kuvaus">Teet pienyritykselle kotisivun vaihe vaiheelta etusivusta alasivuihin ja tyyleihin. Lopuksi validoit sivut ja palautat työn arvioitavaksi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: Tee tyylitiedosto ja muotoile kaikki sivut. Loput jatkuvat viikolla 2.</p><p class="kortti-osat"><span class="kortti-edistys">0/2 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W01:el-70011:1" data-id="2027-W01:el-70011:1" data-vk="2027-W01" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut" data-lyhyt="Vaihe 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut</strong></span><span class="meta"><span class="nw">jakso <span class="num">1</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W01:el-70011:2" data-id="2027-W01:el-70011:2" data-vk="2027-W01" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut" data-lyhyt="Vaihe 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut</strong></span><span class="meta"><span class="nw">jakso <span class="num">2</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 50 minuutin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko" id="vk-2027-W02" data-viikko="2027-W02" data-alkaa="2027-01-11" data-paattyy="2027-01-17" data-nro="2" aria-labelledby="vk-2027-W02-otsikko" data-opnro="9" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2027-W02-otsikko"><span class="vk-nimi">Viikko <span class="num">2</span></span> <span class="pvm"><time datetime="2027-01-11">11.1.</time>–<time datetime="2027-01-17">17.1.2027</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">9</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2027-W02:el-70011" style="flex-grow:90"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2027-W02-avaaja" aria-expanded="true" aria-controls="vk-2027-W02-sisalto" aria-describedby="vk-2027-W02-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2027-W02-sisalto"><p class="tavoite">Tällä viikolla saat tyylitiedoston valmiiksi ja muotoilet kaikki sivut. <span class="tavoite-loppu" id="vk-2027-W02-tavoite">Aloitat myös lopputyön viimeisen vaiheen: validoit sivut ja kirjoitat kuvauksen ja itsearvioinnin. Osoitat osaamistasi arvioitavassa lopputyössä. Lopputyön viimeistely jatkuu ensi viikolla.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2027-W02-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2027-01-13">13.1.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2027-W02:el-70011" data-vk="2027-W02" data-otsikko="Lopputyö: pienyrityksen kotisivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" data-arvioitava="1" data-jatkuu-vk="3" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2027-W02-1" aria-expanded="true" aria-controls="ks-2027-W02-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Lopputyö: pienyrityksen kotisivu">Lopputyö: pienyrityksen kotisivu</span> <span class="arvioitava">Arvioitava</span></span><span class="meta"><span class="kortti-pv">ma–ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">90</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2027-W02-1"><p class="kuvaus">Teet pienyritykselle kotisivun vaihe vaiheelta etusivusta alasivuihin ja tyyleihin. Lopuksi validoit sivut ja palautat työn arvioitavaksi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="viikon-raja">Tällä viikolla riittää: Tee tyylitiedosto ja muotoile kaikki sivut, Validoi sivut, kirjoita kuvaus ja itsearviointi. Loput jatkuvat viikolla 3.</p><p class="kortti-osat"><span class="kortti-edistys">0/6 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W02:el-70011:1" data-id="2027-W02:el-70011:1" data-vk="2027-W02" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut" data-lyhyt="Vaihe 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut</strong></span><span class="meta"><span class="nw">jakso <span class="num">3</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W02:el-70011:2" data-id="2027-W02:el-70011:2" data-vk="2027-W02" data-osa="el-70011" data-min="15" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut" data-lyhyt="Vaihe 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut</strong></span><span class="meta"><span class="nw">jakso <span class="num">4</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W02:el-70011:3" data-id="2027-W02:el-70011:3" data-vk="2027-W02" data-osa="el-70011" data-min="15" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut" data-lyhyt="Vaihe 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut</strong></span><span class="meta"><span class="nw">jakso <span class="num">5</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W02:el-70011:4" data-id="2027-W02:el-70011:4" data-vk="2027-W02" data-osa="el-70011" data-min="15" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut" data-lyhyt="Vaihe 4/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut</strong></span><span class="meta"><span class="nw">jakso <span class="num">6</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">15</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W02:el-70011:5" data-id="2027-W02:el-70011:5" data-vk="2027-W02" data-osa="el-70011" data-min="5" data-vaihe="lukeminen" data-nimi="Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi" data-lyhyt="Vaihe 5/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi</strong></span><span class="meta"><span class="nw">jakso <span class="num">1</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">5</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W02:el-70011:6" data-id="2027-W02:el-70011:6" data-vk="2027-W02" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi" data-lyhyt="Vaihe 5/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi</strong></span><span class="meta"><span class="nw">jakso <span class="num">2</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section><section class="viikko" id="vk-2027-W03" data-viikko="2027-W03" data-alkaa="2027-01-18" data-paattyy="2027-01-24" data-nro="3" aria-labelledby="vk-2027-W03-otsikko" data-opnro="10" data-kesto="noin 1,5 tuntia" data-kesto-gen="noin 1,5 tunnin" data-tarkistus="1"><h2 id="vk-2027-W03-otsikko"><span class="vk-nimi">Viikko <span class="num">3</span></span> <span class="pvm"><time datetime="2027-01-18">18.1.</time>–<time datetime="2027-01-24">24.1.2027</time></span></h2><p class="viikko-tieto">Opiskeluviikko <span class="num">10</span>/<span class="num">10</span> <span class="erotin">·</span> <span class="nw">noin 1,5 tuntia</span> <span class="erotin">·</span> tarkistus opettajan kanssa viikon lopussa <span class="erotin">·</span> arvioitu valmistumisviikko</p><div class="vk-palat" aria-hidden="true"><span class="vk-pala" data-kortti="2027-W03:el-70011" style="flex-grow:80"></span></div><p class="viikko-tila" hidden></p><button type="button" class="avaaja viikko-avaaja nappi toissijainen" id="vk-2027-W03-avaaja" aria-expanded="true" aria-controls="vk-2027-W03-sisalto" aria-describedby="vk-2027-W03-otsikko" data-auki="Piilota tehtävät" data-kiinni="Näytä tehtävät" hidden>Piilota tehtävät</button><div class="viikko-lohko viikko-sisalto" id="vk-2027-W03-sisalto"><p class="tavoite">Tällä viikolla saat lopputyön valmiiksi. <span class="tavoite-loppu" id="vk-2027-W03-tavoite">Viimeistelet sivujen validoinnin, kirjoitat kuvauksen ja itsearvioinnin sekä palautat työn arvioitavaksi. Lopputyössä osoitat, että osaat rakentaa, muotoilla, testata ja dokumentoida verkkosivun.</span></p><button type="button" class="avaaja tavoite-avaaja linkkinappi" aria-expanded="true" aria-controls="vk-2027-W03-tavoite" data-auki="Näytä vähemmän" data-kiinni="Lue lisää" hidden>Näytä vähemmän</button><ul class="kiinteat-rivit" aria-label="Muut opinnot tällä viikolla"><li><span class="kiintea-pvm">Keskiviikko <time datetime="2027-01-20">20.1.</time>:</span> <span class="kiintea-nimi">YTO-opinnot</span> <span class="kiintea-kuvaus">Yhteiset tutkinnon osat oman lukujärjestyksesi mukaan.</span></li></ul><ol class="tehtavat viikon-tehtavat"><li class="tehtava-rivi kohde" data-kortti="2027-W03:el-70011" data-vk="2027-W03" data-otsikko="Lopputyö: pienyrityksen kotisivu" data-url="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" data-arvioitava="1" data-jarjestys="1"><div class="tehtava"><h3 class="kortti-otsikko"><button type="button" class="avaaja kortti-avaaja" id="ka-2027-W03-1" aria-expanded="true" aria-controls="ks-2027-W03-1"><span class="seuraavaksi" hidden>Seuraavaksi</span><span class="tehtava-nimi"><span class="tehtava-nro">1.</span> <span class="tehtava-otsikko" title="Lopputyö: pienyrityksen kotisivu">Lopputyö: pienyrityksen kotisivu</span> <span class="arvioitava">Arvioitava</span></span><span class="meta"><span class="kortti-pv">ma–ti</span> <span class="erotin">·</span> <span class="nw"><span class="kortti-min"><span class="num">80</span> min</span></span> <span class="tila-merkki" hidden></span></span><span class="avaus-merkki" aria-hidden="true"></span></button></h3><div class="tehtava-sisalto" id="ks-2027-W03-1"><p class="kuvaus">Teet pienyritykselle kotisivun vaihe vaiheelta etusivusta alasivuihin ja tyyleihin. Lopuksi validoit sivut ja palautat työn arvioitavaksi.</p><p class="tehtava-linkki-rivi"><a class="tehtava-linkki" href="https://bc.itslearning.com/ContentArea/ContentArea.aspx?LocationID=20481&amp;LocationType=1&amp;ElementID=70011" target="_blank" rel="noopener">Avaa tehtävä itslearningissa (uusi välilehti)</a></p><p class="kortti-osat"><span class="kortti-edistys">0/4 osaa</span> tehty</p><ol class="alatehtavat"><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W03:el-70011:1" data-id="2027-W03:el-70011:1" data-vk="2027-W03" data-osa="el-70011" data-min="20" data-vaihe="itsenainen_tuottaminen" data-nimi="Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi" data-lyhyt="Vaihe 5/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi</strong></span><span class="meta"><span class="nw">jakso <span class="num">3</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W03:el-70011:2" data-id="2027-W03:el-70011:2" data-vk="2027-W03" data-osa="el-70011" data-min="20" data-vaihe="palautus" data-nimi="Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi" data-lyhyt="Vaihe 5/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi</strong></span><span class="meta"><span class="nw">jakso <span class="num">4</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W03:el-70011:3" data-id="2027-W03:el-70011:3" data-vk="2027-W03" data-osa="el-70011" data-min="20" data-vaihe="palautus" data-nimi="Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi" data-lyhyt="Vaihe 5/5" data-jatkuu="1" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi</strong></span><span class="meta"><span class="nw">jakso <span class="num">5</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li><li class="alatehtava"><label class="jakso-rivi"><input type="checkbox" class="ruutu jakso" id="j-2027-W03:el-70011:4" data-id="2027-W03:el-70011:4" data-vk="2027-W03" data-osa="el-70011" data-min="20" data-vaihe="palautus" data-nimi="Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi" data-lyhyt="Vaihe 5/5" autocomplete="off"><span class="ruutu-kuva" aria-hidden="true"></span><span class="alatehtava-sisalto"><span class="alatehtava-teksti"><strong>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi</strong></span><span class="meta"><span class="nw">jakso <span class="num">6</span>/<span class="num">6</span></span> <span class="erotin">·</span> <span class="nw"><span class="num">20</span> min</span></span></span><span class="jakso-merkinta" aria-hidden="true"></span></label></li></ol><div class="tuki valmis-kun"><p class="tuki-otsikko">Valmis, kun</p><ol class="ruutulista"><li><span class="ruutu" aria-hidden="true"></span><span>etusivu ja kaksi alasivua toimivat</span></li><li><span class="ruutu" aria-hidden="true"></span><span>valikko on kaikilla sivuilla</span></li><li><span class="ruutu" aria-hidden="true"></span><span>tyylit ovat erillisessä tiedostossa</span></li><li><span class="ruutu" aria-hidden="true"></span><span>validaattori ei näytä virheitä</span></li><li><span class="ruutu" aria-hidden="true"></span><span>kuvaus ja itsearviointi on kirjoitettu</span></li><li><span class="ruutu" aria-hidden="true"></span><span>zip on palautettu.</span></li></ol></div><div class="kortti-valmis" hidden><p class="kortti-valmis-teksti"></p><button type="button" class="nappi toissijainen" data-toiminto="seuraava-kortti" hidden>Seuraava tehtävä</button></div></div></div></li></ol><div class="viikkotarkistus-kohta"><p class="vt-otsikko">Viikkotarkistus</p><p class="vt-teksti">Kun viikon työt on tehty, katso lyhyesti kolme asiaa: mitä sait tehtyä, jäikö jotain kesken ja miltä noin 1,5 tunnin työmäärä tuntui. Sivu kysyy ne, ja vastaukset voit näyttää opettajalle.</p></div></div></section></div></div></section>
+<section class="apu" aria-label="Ohjeet ja merkinnät"><div class="apulinkit"><button type="button" class="avaaja lohko-avaaja apulinkki" id="ohje-otsikko" aria-expanded="true" aria-controls="ohje-sisalto">Näin käytät tätä aikataulua</button><button type="button" class="avaaja lohko-avaaja apulinkki" id="jumi-otsikko" aria-expanded="true" aria-controls="jumi-sisalto">Jos jäät jälkeen tai jumitut</button><button type="button" class="avaaja lohko-avaaja apulinkki" id="tallennus-otsikko" aria-expanded="true" aria-controls="tallennus-sisalto">Merkinnät toiselle laitteelle</button></div><div class="lohko-sisalto ohje" id="ohje-sisalto" role="region" aria-labelledby="ohje-otsikko"><ol class="numeroitu"><li>Ylimpänä on aina se, mitä teet nyt: yksi tehtävä ja sen seuraava osa. Kun osa on tehty, merkitse se tehdyksi. Sivu näyttää sen jälkeen seuraavan.</li><li>Tämän viikon tehtävät ovat Nyt-kohdan alla järjestyksessä. Avaa tehtävä napauttamalla sen nimeä. Sieltä löydät kuvauksen, linkin itslearningiin ja osat, joihin voit merkitä rastin. Tehtävän kohdalla näkyy päivä, jolle se on suunniteltu.</li><li>Minuutit ovat arvioita, eivät vaatimuksia. Päivässä riittää noin 38 minuuttia. Kun viikon työt on tehty, sivu kertoo sen.</li><li>Keskiviikkoisin on YTO-opinnot. Silloin ei ole tämän kurssin tehtäviä.</li></ol></div><div class="lohko-sisalto jumi" id="jumi-sisalto" role="region" aria-labelledby="jumi-otsikko"><p>Aikataulu on suunnitelma, ja sitä voi muuttaa. On tavallista, että jokin viikko menee eri tavalla kuin suunniteltiin.</p><ol class="numeroitu"><li>Jatka siitä tehtävästä, johon jäit. Kaikkea ei tarvitse tehdä kerralla kiinni.</li><li>Jos jumitut tehtävään, katso ensin tehtävän kohdalla oleva ohje. Jos et pääse eteenpäin, kirjoita opettajalle itslearningin viestillä yksi lause: mitä yritit ja mitä tapahtui.</li><li>Kerro opettajalle, jos tehtäviä jää kesken. Opettaja laskee aikataulun uudelleen, ja saat uuden version, joka alkaa siitä, missä olet nyt.</li></ol></div><div class="lohko-sisalto merkinnat" id="tallennus-sisalto" role="region" aria-labelledby="tallennus-otsikko"><div class="tallennus" hidden><p class="tallennus-tieto" id="tallennus-tieto">Merkinnät tallentuvat tähän selaimeen tällä laitteella.</p><p>Jos käytät aikataulua myös toisella laitteella, vie merkinnät tiedostoon ja tuo ne toisella laitteella. Helpointa on käyttää aikataulua yhdellä laitteella.</p><p class="tallennus-napit"><button type="button" id="vie">Vie merkinnät</button> <button type="button" id="tuo">Tuo merkinnät</button><input type="file" id="tuo-tiedosto" accept="application/json,.json" hidden> <span id="tuo-tulos" role="status"></span></p></div></div></section>
+<a class="ylos" id="ylos" href="#nyt" hidden>↑ Nyt</a>
+<div class="tuloste"><p class="t-ohje">Viikkokohtainen tarkistuslista. Merkitse rasti, kun osa on tehty. Tehtävien ohjeet ovat itslearningissa.</p><section class="t-viikko"><h2>Viikko 45 · 2.11.–8.11.2026</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 4.11. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Tervetuloa kurssille <span class="t-min">· 5 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Lue materiaali · 5 min</li></ul></li><li class="t-kortti"><p class="t-otsikko">2. HTML-dokumentin rakenne <span class="t-min">· 40 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 1/2: Lue materiaali · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 2/2: Tee harjoitus ohjeen mukaan · 20 min</li></ul></li><li class="t-kortti"><p class="t-otsikko">3. Otsikot, kappaleet ja listat <span class="t-min">· 25 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 1/2: Lue materiaali · 5 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 2/2: Tee harjoitus ohjeen mukaan · 20 min</li></ul></li><li class="t-kortti"><p class="t-otsikko">4. Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu <span class="t-min">· 20 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 1/5: Lue materiaali · 5 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 2/5: Tee harjoitus ohjeen mukaan · 15 min</li></ul><p class="t-raja">Tällä viikolla riittää: osat 1–2/5. Loput jatkuvat viikolla 46.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 46 · 9.11.–15.11.2026</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 11.11. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Vaihtoehtoinen harjoitus: korjaa valmis esittelysivu <span class="t-min">· 45 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 3/5: Tee harjoitus ohjeen mukaan · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 4/5: Tee tehtävä · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 5/5: Viimeistele ja palauta · 15 min</li></ul><p class="t-alaotsikko">Valmis, kun</p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>header, nav, main ja footer ovat paikoillaan</li><li><span class="t-ruutu" aria-hidden="true"></span>valikon linkit ovat listassa</li><li><span class="t-ruutu" aria-hidden="true"></span>otsikot ovat h2-elementtejä</li><li><span class="t-ruutu" aria-hidden="true"></span>harrastukset ovat ul-listassa</li><li><span class="t-ruutu" aria-hidden="true"></span>sivulla on oma section</li><li><span class="t-ruutu" aria-hidden="true"></span>sivu näyttää selaimessa samalta kuin alussa.</li></ul></li><li class="t-kortti"><p class="t-otsikko">2. Valitsimet ja ominaisuudet <span class="t-min">· 45 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 1/4: Lue materiaali · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 2/4: Lue materiaali · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 3/4: Tee harjoitus ohjeen mukaan · 15 min</li></ul><p class="t-raja">Tällä viikolla riittää: osat 1–3/4. Loput jatkuvat viikolla 47.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 47 · 16.11.–22.11.2026</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 18.11. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Valitsimet ja ominaisuudet <span class="t-min">· 10 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 4/4: Tee harjoitus ohjeen mukaan · 10 min</li></ul></li><li class="t-kortti"><p class="t-otsikko">2. Harjoitus: värit ja fontit <span class="t-min">· 65 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 1/5: Lue materiaali · 5 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 2/5: Tee harjoitus ohjeen mukaan · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 3/5: Tee tehtävä · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Osa 4/5: Tee tehtävä · 20 min</li></ul><p class="t-raja">Tällä viikolla riittää: osat 1–4/5. Loput jatkuvat viikolla 48.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 48 · 23.11.–29.11.2026</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 25.11. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Harjoitus: värit ja fontit <span class="t-min">· 15 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Osa 5/5: Viimeistele ja palauta · 15 min</li></ul><p class="t-alaotsikko">Valmis, kun</p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>sivulla on käytössä kaksi väriä</li><li><span class="t-ruutu" aria-hidden="true"></span>kaikissa teksteissä on sama fontti</li><li><span class="t-ruutu" aria-hidden="true"></span>valikko on muotoiltu</li><li><span class="t-ruutu" aria-hidden="true"></span>sinulla on yksi oma luokka</li><li><span class="t-ruutu" aria-hidden="true"></span>molemmat tiedostot on palautettu.</li></ul></li><li class="t-kortti"><p class="t-otsikko">2. Välitarkistus: HTML ja CSS <span class="t-min">· 15 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Tarkistus opettajan kanssa · 15 min</li></ul></li><li class="t-kortti"><p class="t-otsikko">3. Lopputyön ohje: pienyrityksen kotisivu (arvioitava) <span class="t-min">· 20 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Lue materiaali · 20 min</li></ul><p class="t-alaotsikko">Valmis, kun</p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Tämä osa on valmis, kun olet lukenut vaiheet 1–5, valinnut yrityksen ja kirjoittanut sen nimen muistiin.</li></ul></li><li class="t-kortti"><p class="t-otsikko">4. Jos jumitut lopputyössä <span class="t-min">· 5 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Lue ohje ennen kuin jatkat · 5 min</li></ul></li><li class="t-kortti"><p class="t-otsikko">5. Lopputyön ensimmäinen askel <span class="t-min">· 15 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Tee ensimmäinen askel · 15 min</li></ul></li><li class="t-kortti"><p class="t-otsikko">6. Välitarkistus: lopputyön suunnitelma <span class="t-min">· 15 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Tarkistus opettajan kanssa · 15 min</li></ul></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 49 · 30.11.–6.12.2026</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 2.12. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Lopputyö: pienyrityksen kotisivu (arvioitava) <span class="t-min">· 80 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 1/5: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 1/5: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 2/5: Tee etusivu ja näytä se opettajalle · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 2/5: Tee etusivu ja näytä se opettajalle · 20 min</li></ul><p class="t-raja">Tällä viikolla riittää: Valitse yritys ja kirjoita, mitä sivuilla kerrotaan, Tee etusivu ja näytä se opettajalle. Loput jatkuvat viikolla 50.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 50 · 7.12.–13.12.2026</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 9.12. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Lopputyö: pienyrityksen kotisivu (arvioitava) <span class="t-min">· 90 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 2/5: Tee etusivu ja näytä se opettajalle · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 2/5: Tee etusivu ja näytä se opettajalle · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 2/5: Tee etusivu ja näytä se opettajalle · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko · 20 min</li></ul><p class="t-raja">Tällä viikolla riittää: Tee etusivu ja näytä se opettajalle, Tee kaksi alasivua ja yhteinen valikko. Loput jatkuvat viikolla 51.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 51 · 14.12.–20.12.2026</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 16.12. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Lopputyö: pienyrityksen kotisivu (arvioitava) <span class="t-min">· 75 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 3/5: Tee kaksi alasivua ja yhteinen valikko · 15 min</li></ul><p class="t-raja">Tällä viikolla riittää: Tee kaksi alasivua ja yhteinen valikko. Loput jatkuvat viikolla 1.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><p class="t-loma">Loma (viikot 52–53) 21.12.–3.1.2027 – ei opiskelua.</p><section class="t-viikko"><h2>Viikko 1 · 4.1.–10.1.2027</h2><p class="t-tieto">Noin 40 minuuttia, tarkistus opettajan kanssa viikon lopussa.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Lopputyö: pienyrityksen kotisivu (arvioitava) <span class="t-min">· 40 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut · 20 min</li></ul><p class="t-raja">Tällä viikolla riittää: Tee tyylitiedosto ja muotoile kaikki sivut. Loput jatkuvat viikolla 2.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 50 minuutin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 2 · 11.1.–17.1.2027</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 13.1. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Lopputyö: pienyrityksen kotisivu (arvioitava) <span class="t-min">· 90 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 4/5: Tee tyylitiedosto ja muotoile kaikki sivut · 15 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi · 5 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi · 20 min</li></ul><p class="t-raja">Tällä viikolla riittää: Tee tyylitiedosto ja muotoile kaikki sivut, Validoi sivut, kirjoita kuvaus ja itsearviointi. Loput jatkuvat viikolla 3.</p></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section><section class="t-viikko"><h2>Viikko 3 · 18.1.–24.1.2027</h2><p class="t-tieto">Noin 1,5 tuntia, tarkistus opettajan kanssa viikon lopussa. Ei tämän kurssin tehtäviä: Keskiviikko 20.1. YTO-opinnot.</p><ol class="t-lista"><li class="t-kortti"><p class="t-otsikko">1. Lopputyö: pienyrityksen kotisivu (arvioitava) <span class="t-min">· 80 min</span></p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi · 20 min</li><li><span class="t-ruutu" aria-hidden="true"></span>Vaihe 5/5: Validoi sivut, kirjoita kuvaus ja itsearviointi · 20 min</li></ul><p class="t-alaotsikko">Valmis, kun</p><ul class="t-jaksot"><li><span class="t-ruutu" aria-hidden="true"></span>etusivu ja kaksi alasivua toimivat</li><li><span class="t-ruutu" aria-hidden="true"></span>valikko on kaikilla sivuilla</li><li><span class="t-ruutu" aria-hidden="true"></span>tyylit ovat erillisessä tiedostossa</li><li><span class="t-ruutu" aria-hidden="true"></span>validaattori ei näytä virheitä</li><li><span class="t-ruutu" aria-hidden="true"></span>kuvaus ja itsearviointi on kirjoitettu</li><li><span class="t-ruutu" aria-hidden="true"></span>zip on palautettu.</li></ul></li></ol><p class="t-tarkistus"><strong>Viikkotarkistus:</strong> <span class="t-ruutu" aria-hidden="true"></span>Mitä sain tehtyä? <span class="t-ruutu" aria-hidden="true"></span>Jäikö jotain kesken tai siirtyykö jotain ensi viikolle? <span class="t-ruutu" aria-hidden="true"></span>Miltä noin 1,5 tunnin työmäärä tuntui?</p></section></div>
+<footer class="alatunniste"><p>opp-k7x2 <span class="erotin">·</span> toteutus 20481 <span class="erotin">·</span> aikataulu laskettu <time datetime="2026-10-30">30.10.2026</time></p></footer>
+</main>
+<script>
+(function () {
+  'use strict';
+  var P = document.querySelector('main.sivu');
+  if (!P) return;
+  var D = P.dataset, tila = {}, tallentuu = true;
+  var AVAIN = 'viikkopolku:' + D.pseudonyymi + ':' + D.toteutus + ':' + D.aikataulu;
+  var K_UI = AVAIN + ':ui', K_TARK = AVAIN + ':tarkistukset', K_SIIRTO = AVAIN + ':siirrot';
+  var KIINTIO = +D.paivakiintio || 240, OPPV = (D.opiskelupaivat || 'ma,ti,to,pe').split(',');
+  var VKP = ['su', 'ma', 'ti', 'ke', 'to', 'pe', 'la'];
+  var PAIVANA = { ma: 'maanantaina', ti: 'tiistaina', ke: 'keskiviikkona', to: 'torstaina', pe: 'perjantaina',
+    la: 'lauantaina', su: 'sunnuntaina' };
+  var VAHEMMAN = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function $(q, juuri) { return (juuri || document).querySelector(q); }
+  function $$(q, juuri) { return Array.prototype.slice.call((juuri || document).querySelectorAll(q)); }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+  }
+  function on(o) { return o && typeof o === 'object' && !Array.isArray(o); }
+
+  // -- päivämäärät (paikallinen aika) --
+  function kaksi(n) { return ('0' + n).slice(-2); }
+  function iso(d) { return d.getFullYear() + '-' + kaksi(d.getMonth() + 1) + '-' + kaksi(d.getDate()); }
+  function pvm() { return iso(new Date()); }
+  function paiva(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function lisaa(s, n) { var d = paiva(s); d.setDate(d.getDate() + n); return iso(d); }
+  function pv(s, vuosi) { var d = paiva(s); return d.getDate() + '.' + (d.getMonth() + 1) + '.' + (vuosi ? d.getFullYear() : ''); }
+  function paivana(s) { return PAIVANA[VKP[paiva(s).getDay()]] + ' ' + pv(s); }
+  function aika() { var d = new Date(); return iso(d) + 'T' + kaksi(d.getHours()) + ':' + kaksi(d.getMinutes()); }
+
+  // -- tallennus: jokainen yritys omassa try/catchissa --
+  function lueAvain(k) {
+    try {
+      var s = window.localStorage.getItem(k), o = s && JSON.parse(s);
+      return on(o) ? o : null;
+    } catch (e) { tallentuu = false; return null; }
+  }
+  function kirjoitaAvain(k, o) {
+    try { window.localStorage.setItem(k, JSON.stringify(o)); }
+    catch (e) { tallentuu = false; }
+  }
+  var ui = { v: 1 }, tark = { v: 1 }, siirrot = { v: 1 };
+  function lue() {
+    var o = lueAvain(AVAIN);
+    if (o && on(o.merkinnat)) {
+      Object.keys(o.merkinnat).forEach(function (id) {
+        tila[id] = typeof o.merkinnat[id] === 'string' ? o.merkinnat[id] : pvm();
+      });
+    }
+    ui = lueAvain(K_UI) || { v: 1 };
+    tark = lueAvain(K_TARK) || { v: 1 };
+    siirrot = lueAvain(K_SIIRTO) || { v: 1 };
+  }
+  function tallenna() { kirjoitaAvain(AVAIN, { v: 1, merkinnat: tila }); tiedotus(); }
+  function tallennaUi() { kirjoitaAvain(K_UI, ui); }
+  function tiedotus() {
+    $('#tallennus-tieto').textContent = tallentuu
+      ? 'Merkinnät tallentuvat tähän selaimeen tällä laitteella.'
+      : 'Merkinnät eivät tallennu tähän selaimeen. Voit viedä ne tiedostoon.';
+  }
+
+  // -- kestot --
+  function hm(m) {
+    if (m < 60) return m + ' min';
+    var t = Math.floor(m / 60), r = Math.round((m % 60) / 5) * 5;
+    if (r === 60) { t++; r = 0; }
+    return t + ' h' + (r ? ' ' + r + ' min' : '');
+  }
+  function tunteina(m) {
+    if (m < 60) return 'noin ' + m + ' minuuttia';
+    var p = Math.floor(m / 30 + 0.5), t = p % 2 ? Math.floor(p / 2) + ',5' : String(p / 2);
+    return t === '1' ? 'noin tunnin' : 'noin ' + t + ' tuntia';
+  }
+  function lyh(m) {
+    if (m < 60) return m + ' min';
+    var p = Math.floor(m / 30 + 0.5);
+    return (p % 2 ? Math.floor(p / 2) + ',5' : p / 2) + ' h';
+  }
+
+  // -- viikot ja kohteet (järjestys luetaan ennen kuin mitään siirretään) --
+  var viikot = $$('section.viikko[data-viikko]').map(function (el) {
+    var d = el.dataset;
+    return { el: el, iso: d.viikko, alkaa: d.alkaa, paattyy: d.paattyy, loma: el.hasAttribute('data-loma'),
+      nro: d.nro, opnro: d.opnro, gen: d.kestoGen || '', kesto: d.kesto || '', kohteet: [], avaaja: $('.viikko-avaaja', el) };
+  }).sort(function (a, b) { return a.alkaa < b.alkaa ? -1 : 1; });
+  var vk = {};
+  viikot.forEach(function (w, i) { w.i = i; vk[w.iso] = w; });
+  var kohteet = $$('.kohde').map(function (el, n) {
+    var d = el.dataset, k = { el: el, id: d.kortti, w: vk[d.vk], n: n, jaksot: $$('input.jakso', el),
+      vapaa: el.hasAttribute('data-vapaaehtoinen'), arv: el.hasAttribute('data-arvioitava'),
+      mat: el.hasAttribute('data-materiaali'), otsikko: d.otsikko, url: d.url || '', jatkuuVk: d.jatkuuVk || '',
+      nappi: $('.kortti-avaaja', el), valmisEl: $('.kortti-valmis', el) };
+    return k;
+  }).filter(function (k) { return k.w; }).sort(function (a, b) { return a.w.i - b.w.i || a.n - b.n; });
+  var kohdeId = {};
+  kohteet.forEach(function (k) { k.w.kohteet.push(k); kohdeId[k.id] = k; });
+  var jaksot = $$('input.jakso'), ryhmat = {}, jaksonKohde = {};
+  kohteet.forEach(function (k) { k.jaksot.forEach(function (j) { jaksonKohde[j.dataset.id] = k; }); });
+  jaksot.forEach(function (j) {
+    var r = j.dataset.vk + ':' + j.dataset.osa;
+    (ryhmat[r] = ryhmat[r] || []).push(j);
+  });
+  function mins(k, laji) {
+    return k.jaksot.reduce(function (s, j) {
+      return s + ((laji === 'tehty' && !j.checked) || (laji === 'jaljella' && j.checked) ? 0 : +j.dataset.min);
+    }, 0);
+  }
+  function valmis(k) { return k.jaksot.every(function (j) { return j.checked; }); }
+  function seuraava(k) { return k.jaksot.filter(function (j) { return !j.checked; })[0]; }
+  function siirretty(k) { return !!siirrot[k.id]; }
+  function pakollinen(k) { return !k.vapaa; }
+  function opiskeluviikko(w) { return w && !w.loma && w.kohteet.some(pakollinen); }
+  function lause(s) { return /[.?!]$/.test(s) ? s : s + '.'; }
+  function pieni(s) { return s.charAt(0).toLowerCase() + s.slice(1); }
+
+  // -- avattavat lohkot: oma painike (aria-expanded + aria-controls), ei details/summary. Ilman JS:ää kaikki näkyy. --
+  function lohkoOf(b) { return b && document.getElementById(b.getAttribute('aria-controls')); }
+  function onAuki(b) { return !!b && b.getAttribute('aria-expanded') === 'true'; }
+  function asetaAuki(b, auki) {
+    if (!b) return;
+    b.setAttribute('aria-expanded', auki ? 'true' : 'false');
+    var s = lohkoOf(b);
+    if (s) s.hidden = !auki;
+    if (b.dataset.auki) b.textContent = auki ? b.dataset.auki : b.dataset.kiinni;
+    var k = b.closest('.kohde');
+    if (k) k.classList.toggle('auki', auki);
+  }
+  function muistaAuki(id, auki) {  // käyttäjän avaamat kortit säilyvät auki myös uudelleenlatauksessa
+    var a = Array.isArray(ui.avoimet) ? ui.avoimet.filter(function (x) { return x !== id; }) : [];
+    if (auki) { a.push(id); ui.avoinKortti = id; }
+    ui.avoimet = a.slice(-12);
+    tallennaUi();
+  }
+  function jalkeen(a, b) { return !!(b.el.compareDocumentPosition(a.el) & 4); }  // a on DOMissa b:n jälkeen
+
+  // -- tilanne: nykyinen viikko, kertymä ja ero --
+  function opiskelupaivia(alku, loppu) {  // [alku, loppu)
+    var n = 0;
+    for (var s = alku; s < loppu; s = lisaa(s, 1)) if (OPPV.indexOf(VKP[paiva(s).getDay()]) >= 0) n++;
+    return n;
+  }
+  function tilanne() {
+    var t = pvm(), op = viikot.filter(opiskeluviikko), s = { t: t, loma: null, ennen: false, jalkeen: false };
+    if (!op.length) return null;
+    var w = viikot.filter(function (x) { return x.alkaa <= t && t <= x.paattyy; })[0];
+    var seur = function (x) { return op.filter(function (y) { return y.alkaa > x; })[0]; };
+    if (!w) {
+      if (t < op[0].alkaa) { s.nyky = op[0]; s.ennen = true; }
+      else { s.nyky = seur(t) || op[op.length - 1]; s.jalkeen = !seur(t); }
+    } else if (!opiskeluviikko(w)) {
+      s.loma = w.loma ? w : null;
+      s.nyky = seur(w.paattyy) || op[op.length - 1];
+      s.jalkeen = !seur(w.paattyy);
+      s.ennen = !s.jalkeen;
+    } else s.nyky = w;
+    var suun = 0, nyky = 0, tehty = 0, tanaan = 0;
+    kohteet.forEach(function (k) {
+      k.jaksot.forEach(function (j) { if (j.checked && tila[j.dataset.id] === t) tanaan += +j.dataset.min; });
+      if (k.vapaa || siirretty(k)) return;
+      tehty += mins(k, 'tehty');
+      if (k.w.i < s.nyky.i) suun += mins(k); else if (k.w === s.nyky) nyky += mins(k);
+    });
+    var a0 = D.aloitus && D.aloitus > s.nyky.alkaa ? D.aloitus : s.nyky.alkaa;  // ensimmäinen viikko alkaa aloituspäivästä
+    var osuus = s.ennen ? 0 : s.jalkeen ? 1 : opiskelupaivia(a0, t) / (opiskelupaivia(a0, lisaa(s.nyky.paattyy, 1)) || 1);
+    s.osuus = osuus;
+    s.suunniteltu = Math.round(suun + nyky * osuus);
+    s.tehty = tehty;
+    s.tanaan = tanaan;
+    s.ero = tehty - s.suunniteltu;
+    s.kesken = kohteet.filter(function (k) {
+      return pakollinen(k) && !siirretty(k) && !valmis(k) && k.w.i <= s.nyky.i;
+    })[0] || null;
+    s.kaikki = kohteet.filter(pakollinen).every(valmis);
+    s.seuraavaViikko = op.filter(function (y) { return y.i > s.nyky.i; })[0] || null;
+    return s;
+  }
+  function tauolle() { return on(ui.tauko) && ui.tauko.pvm === pvm() && (ui.tauko.jaksoja >= 2 || ui.tauko.min >= 40); }
+  function valitse(s) {
+    var ed = vk[ui.viimeisinViikko];
+    if (ed && ed.i < s.nyky.i && opiskeluviikko(ed) && !tark[ed.iso]) return 'VIIKKO_VAIHTUI';
+    if (!s.kesken && !tark[s.nyky.iso] && !s.loma && !s.ennen) return 'VIIKKO_VALMIS';
+    if (s.kaikki) return 'KURSSI_VALMIS';
+    if (s.loma) return 'LOMA';
+    if (!s.kesken) return 'RIITTAA';
+    if (s.tanaan >= KIINTIO && !(ui.ylitysTanaan === s.t && ui.ylitysMerkitty !== s.t)) return 'PAIVA_TAYNNA';
+    if (tauolle()) return 'TAUKO';
+    return 'TYO';
+  }
+
+  // -- siirtoehdotus: lukutehtävät ja materiaalit, sitten ensi viikolle jatkuvat; ei arvioitavia --
+  function ehdotukset(s) {
+    function luokka(k) {
+      if (k.mat || k.jaksot.every(function (j) { return j.dataset.vaihe === 'lukeminen'; })) return 1;
+      return k.jatkuuVk ? 2 : 9;
+    }
+    var ehd = kohteet.filter(function (k) {
+      return pakollinen(k) && !siirretty(k) && !valmis(k) && !k.arv && k !== s.kesken && k.w.i <= s.nyky.i && luokka(k) < 9;
+    }).sort(function (a, b) { return luokka(a) - luokka(b) || mins(b, 'jaljella') - mins(a, 'jaljella') || a.n - b.n; });
+    var tulos = [], summa = 0;
+    for (var i = 0; i < ehd.length && tulos.length < 3 && summa < -s.ero; i++) { tulos.push(ehd[i]); summa += mins(ehd[i], 'jaljella'); }
+    return tulos;
+  }
+
+  // -- Nyt-paneeli --
+  var NYT = $('#nyt-sisalto'), ILM = $('#nyt-ilmoitus'), ajastin = null, nykyTila = '';
+  function ilmoita(teksti) {
+    ILM.textContent = teksti;
+    if (ajastin) clearTimeout(ajastin);
+    ajastin = setTimeout(function () { ILM.textContent = ''; }, 6000);
+  }
+  function otsikko(t) { return '<h2 class="nyt-otsikko" id="nyt-otsikko" tabindex="-1">' + esc(t) + '</h2>'; }
+  function nappi(teksti, toiminto, luokka, lisa) {
+    return '<button type="button" class="' + (luokka || '') + '" data-toiminto="' + toiminto + '"' + (lisa || '') + '>' + esc(teksti) + '</button>';
+  }
+  function jaksoTeksti(j) { return j.dataset.lyhyt === 'Osa' ? pieni(j.dataset.nimi) : j.dataset.lyhyt.toLowerCase(); }
+  function tyoHtml(s, k) {
+    var j = seuraava(k), h = '';
+    if (k.w !== s.nyky) h += '<p class="nyt-viikko">Viikolta ' + esc(k.w.nro) + '</p>';
+    h += otsikko(k.otsikko);
+    var kuv = $('.kuvaus', k.el);
+    if (kuv) h += '<p class="nyt-kuvaus">' + esc(kuv.textContent) + '</p>';
+    var kpl = k.jaksot.length > 1;
+    h += '<p class="nyt-jakso"><strong>' + esc(j.dataset.nimi) + '</strong></p>';
+    var ohje = j.closest('label') && $('.jakso-ohje', j.closest('label'));
+    if (ohje) h += '<p>' + esc(ohje.textContent) + '</p>';
+    h += j.dataset.aikaraja
+      ? '<p class="nyt-raja"><strong>Enintään ' + j.dataset.aikaraja + ' min.</strong> Kun aika täyttyy, kirjaa mihin jäit ja merkitse osa tehdyksi.</p>'
+      : '<p class="nyt-raja">Noin ' + j.dataset.min + ' min.</p>';
+    var avoimia = k.jaksot.filter(function (x) { return !x.checked; }).length;
+    if (avoimia === 1) {
+      var raja = $('.viikon-raja', k.el), riittaa = $('.riittava-taso', k.el) || $('.valmis-kun', k.el);
+      if (raja) h += '<p class="nyt-raja">' + esc(raja.textContent) + '</p>';
+      else if (riittaa) h += riittaa.outerHTML;
+    }
+    h += '<p class="nyt-toiminnot">';
+    if (k.url) h += '<a class="nappi" href="' + esc(k.url) + '" target="_blank" rel="noopener">' + (k.mat ? 'Avaa materiaali (uusi välilehti)' : 'Avaa tehtävä itslearningissa (uusi välilehti)') + '</a>';
+    var n = j.dataset.lyhyt.match(/^(?:Osa|Vaihe) (\d+)/);
+    h += nappi(kpl && n ? 'Merkitse ' + j.dataset.lyhyt.split(' ')[0].toLowerCase() + ' ' + n[1] + ' tehdyksi' : 'Merkitse tehdyksi',
+      'merkitse', 'ensisijainen', ' data-jakso="' + esc(j.dataset.id) + '"') + '</p>';
+    return h + tilanneHtml(s);
+  }
+  // Tilanne tehtävän alla (U1): aikataulussa / hieman jäljessä / jäljessä. Selvästi jäljessä oleva saa siirtoehdotuksen
+  // avattavana; kuittauksen (Merkitse siirrettäväksi tai Jatkan näin) jälkeen rivi vain muistuttaa kertomaan opettajalle.
+  var ehdotusAuki = false;
+  function tilanneHtml(s) {
+    if (s.ennen) return '';
+    if (s.ero >= -KIINTIO / 4) return '<p class="nyt-tila">Olet aikataulussa.</p>';
+    if (s.ero >= -KIINTIO) return '<p class="nyt-tila">Olet hieman jäljessä.</p>';
+    var q = ui.jaljessaKuitattu;
+    if (on(q) && q.viikko === s.nyky.iso && s.ero >= q.ero - KIINTIO) {
+      return '<p class="nyt-tila">Noin ' + lyh(-s.ero) + ' jäljessä · kerro opettajalle viikon tarkistuksessa.</p>';
+    }
+    var e = ehdotukset(s);
+    var h = '<div class="nyt-tila nyt-jaljessa"><p>Olet ' + tunteina(-s.ero) + ' jäljessä. Se on tavallista, eikä kaikkea tarvitse ottaa kiinni.</p>';
+    if (!e.length) return h + '</div>';
+    h += '<p>' + nappi(ehdotusAuki ? 'Piilota ehdotus' : 'Katso ehdotus', 'ehdotus', 'linkkinappi',
+      ' aria-expanded="' + ehdotusAuki + '" aria-controls="nyt-ehdotus"') + '</p>';
+    if (ehdotusAuki) {
+      h += '<div class="nyt-ehdotus" id="nyt-ehdotus"><p>Nämä voi siirtää myöhemmäksi:</p><ul class="siirrot">' + e.map(function (x) {
+        var sj = seuraava(x);
+        return '<li>' + esc(x.otsikko) + (x.jaksot.length > 1 ? ', ' + esc(jaksoTeksti(sj)) : '') + ' (' + mins(x, 'jaljella') + ' min)</li>';
+      }).join('') + '</ul><p class="nyt-toiminnot">' +
+        nappi('Merkitse siirrettäväksi', 'siirra', '', ' data-kohteet="' + esc(e.map(function (x) { return x.id; }).join(' ')) + '"') +
+        nappi('Jatkan näin', 'jatkan', '') + '</p><p class="nyt-huom">Kerro siirroista opettajalle viikon tarkistuksessa.</p></div>';
+    }
+    return h + '</div>';
+  }
+  // Päivän mittari (U3): ainoa edistymispalkki; tänään tehdyt minuutit suhteessa päivän kiintiöön, ei prosentteja.
+  function paivaMittari(s) {
+    var arvo = Math.min(s.tanaan, KIINTIO);
+    var teksti = s.tanaan ? 'Tänään tehty noin ' + hm(s.tanaan) + ' / ' + hm(KIINTIO) + '.' : 'Tänään: päivässä riittää ' + tunteina(KIINTIO) + '.';
+    return '<div class="paivamittari"><p class="nyt-paiva" id="paiva-teksti">' + esc(teksti) + '</p>' +
+      '<div class="paiva-raide" role="progressbar" aria-labelledby="paiva-teksti" aria-valuemin="0" aria-valuemax="' + KIINTIO +
+      '" aria-valuenow="' + arvo + '" aria-valuetext="' + esc(s.tanaan ? 'Tänään tehty ' + tunteina(s.tanaan) + ', päivässä riittää ' + tunteina(KIINTIO) : 'Tänään ei vielä tehty, päivässä riittää ' + tunteina(KIINTIO)) +
+      '"><div class="paiva-taytto" style="width:' + (arvo * 100 / KIINTIO) + '%"></div></div></div>';
+  }
+  function tarkistusHtml(w, paattyi) {
+    var tehdyt = w.kohteet.filter(function (k) { return pakollinen(k) && !k.mat && valmis(k); });
+    var h = otsikko(paattyi ? 'Viikko ' + w.nro + ' päättyi.' : 'Viikon ' + w.nro + ' työt on tehty.');
+    h += '<p>' + (paattyi ? 'Katso vielä lyhyesti kolme asiaa.' : 'Katso vielä lyhyesti kolme asiaa:') + '</p><ol class="tarkistus">';
+    h += '<li><strong>1. Mitä sain tehtyä?</strong>' + (tehdyt.length ? '<ul class="tehdyt">' + tehdyt.map(function (k) { return '<li>' + esc(k.otsikko) + '</li>'; }).join('') + '</ul>' : '') + '</li>';
+    h += '<li><fieldset><legend>2. Jäikö jotain kesken tai siirtyykö jotain ensi viikolle?</legend>' +
+      '<label class="valinta"><input type="radio" name="vt-kesken" value="ei"> Ei jäänyt</label>' +
+      '<label class="valinta"><input type="radio" name="vt-kesken" value="jai"> Jäi:</label>' +
+      '<input type="text" id="vt-kesken-teksti" maxlength="300" aria-label="Mitä jäi kesken"></fieldset></li>';
+    h += '<li><fieldset><legend>3. Miltä viikon työmäärä tuntui?' + (w.kesto ? ' Suunnitelmassa oli ' + esc(w.kesto) + '.' : '') + '</legend>' +
+      ['sopiva:Sopiva', 'liikaa:Liikaa', 'liian-vahan:Liian vähän'].map(function (x) {
+        var p = x.split(':');
+        return '<label class="valinta"><input type="radio" name="vt-kuorma" value="' + p[0] + '"> ' + p[1] + '</label>';
+      }).join('') + '</fieldset></li></ol>';
+    h += '<p class="nyt-toiminnot">' + nappi('Tallenna viikkotarkistus', 'tarkistus', 'ensisijainen', ' data-viikko="' + w.iso + '"') + '</p>';
+    h += '<p class="nyt-huom">Näytä tämä opettajalle viikon tarkistuksessa.</p>';
+    return h;
+  }
+  // Kuittaus: merkinnän jälkeen paneeli ei vaihdu heti. Merkitty osa jää näkyviin, ja oppija jatkaa itse (Seuraava)
+  // tai perii merkinnän (Peru). Voimassa, kunnes jompaakumpaa painetaan tai merkintä poistetaan listasta.
+  var kuittaus = null;
+  function kuittausHtml(s, q) {
+    var k = q.k, j = q.j, seur = s.kesken, tilaSeur = valitse(s), teksti = 'Jatka', h = '';
+    if (k.w !== s.nyky) h += '<p class="nyt-viikko">Viikolta ' + esc(k.w.nro) + '</p>';
+    h += otsikko(k.otsikko);
+    h += '<p class="nyt-jakso nyt-merkitty"><span class="ruutu-kuva valittu" aria-hidden="true"></span><strong>' +
+      esc(j.dataset.nimi) + '</strong> <span class="merkinta">Tehty</span></p>';
+    if (valmis(k)) {
+      h += '<p>' + esc(k.jatkuuVk ? 'Tämän viikon osuus on tehty. Tehtävä jatkuu viikolla ' + k.jatkuuVk + '.' : 'Tehtävä on tehty.') + '</p>';
+      if (tilaSeur === 'TYO' && seur) {
+        h += '<p class="nyt-seuraava">Seuraavaksi: ' + esc(seur.otsikko) + ' (' + mins(seur, 'jaljella') + ' min).</p>';
+        teksti = 'Seuraava tehtävä';
+      }
+    } else if (tilaSeur === 'TYO' && seur === k) {
+      h += '<p class="nyt-seuraava">Seuraavaksi ' + esc(jaksoTeksti(seuraava(k))) + '.</p>';
+      teksti = 'Seuraava osa';
+    }
+    return h + '<p class="nyt-toiminnot">' + nappi(teksti, 'seuraava', 'ensisijainen') +
+      nappi('Peru merkintä', 'peru', 'linkkinappi', ' data-jakso="' + esc(j.dataset.id) + '"') + '</p>';
+  }
+  function piirraNyt(s) {
+    if (kuittaus && !kuittaus.j.checked) kuittaus = null;
+    var tilaNyt = kuittaus ? 'KUITTAUS' : valitse(s), h = '', k = s.kesken;
+    nykyTila = tilaNyt;
+    if (tilaNyt === 'KUITTAUS') {
+      h = kuittausHtml(s, kuittaus);
+    } else if (tilaNyt === 'VIIKKO_VAIHTUI') {
+      h = tarkistusHtml(vk[ui.viimeisinViikko], true);
+    } else if (tilaNyt === 'VIIKKO_VALMIS') {
+      h = tarkistusHtml(s.nyky, false);
+    } else if (tilaNyt === 'KURSSI_VALMIS') {
+      h = otsikko('Kaikki kurssin tehtävät on merkitty tehdyiksi.') + '<p>Sovi opettajan kanssa, mitä seuraavaksi.</p>';
+    } else if (tilaNyt === 'LOMA') {
+      h = otsikko('Nyt on loma.') + '<p>Opiskelu jatkuu ' + paivana(s.nyky.alkaa) + paiva(s.nyky.alkaa).getFullYear() + '.' +
+        (k ? ' Ensimmäisenä teet: ' + esc(k.otsikko) + '.' : '') + '</p>';
+    } else if (tilaNyt === 'RIITTAA') {
+      h = otsikko('Tämän viikon työt on tehty.') +
+        (s.seuraavaViikko && !s.jalkeen ? '<p>Seuraavat tehtävät alkavat ' + paivana(s.seuraavaViikko.alkaa) + '</p>' : '<p>Sovi opettajan kanssa, mitä seuraavaksi.</p>') +
+        '<p>Jos haluat tehdä jotain lisää, kysy opettajalta ensin.</p>';
+    } else if (tilaNyt === 'PAIVA_TAYNNA') {
+      var j = seuraava(k);
+      h = otsikko('Tämän päivän työ on tehty.') + '<p>Teit tänään noin ' + hm(s.tanaan) + '. Se riittää.</p>' +
+        '<p>Seuraavalla kerralla aloitat tästä: ' + esc(k.otsikko) + (k.jaksot.length > 1 ? ', ' + esc(jaksoTeksti(j)) : '') + '.</p>' +
+        (ui.ylitysTanaan !== s.t ? '<p>' + nappi('Teen vielä yhden osan', 'ylitys', 'linkkinappi') + '</p>' : '');
+    } else if (tilaNyt === 'TAUKO') {
+      var to = $('.tauko-ohje', k.el);
+      h = otsikko('Pidä nyt 5–10 minuutin tauko.') + '<p>Nouse hetkeksi, juo vettä. Seuraava osa odottaa täällä.</p>' +
+        (to ? '<p>' + esc(to.textContent) + '</p>' : '') +
+        '<p class="nyt-toiminnot">' + nappi('Jatketaan', 'jatka', 'ensisijainen') + '</p>';
+    } else {
+      h = tyoHtml(s, k);
+    }
+    if (['KUITTAUS', 'TYO', 'TAUKO', 'PAIVA_TAYNNA'].indexOf(tilaNyt) >= 0) h += paivaMittari(s);
+    if (!tallentuu) h += '<p class="nyt-huom">Merkinnät eivät tallennu tähän selaimeen. Voit viedä ne tiedostoon sivun lopusta.</p>';
+    NYT.innerHTML = h;
+    P.setAttribute('data-tila', tilaNyt.toLowerCase());
+  }
+
+  // -- tehtävälista ja viikkojen tilat (valmiit kortit jäävät paikalleen; mikään ei piiloudu käyttäjän alta) --
+  function merkintaTeksti(j) {
+    if (!j.checked) return '';
+    var p = tila[j.dataset.id];
+    return p && p !== pvm() ? 'Tehty ' + pv(p) : 'Tehty';
+  }
+  function paivitaLista(s) {
+    kohteet.forEach(function (k) {
+      var n = 0;
+      k.jaksot.forEach(function (j) {
+        var li = j.closest('li'), m = li && $('.jakso-merkinta', li);
+        if (j.checked) n++;
+        if (li) li.classList.toggle('merkitty', j.checked);
+        if (m) m.textContent = merkintaTeksti(j);
+      });
+      var v = n === k.jaksot.length, nyt = !!s && k === s.kesken;
+      k.el.classList.toggle('tehty', v);
+      k.el.classList.toggle('kesken', !v && n > 0);
+      k.el.classList.toggle('siirretty', !v && siirretty(k));
+      k.el.classList.toggle('on-seuraava', nyt);
+      var e = $('.kortti-edistys', k.el);
+      if (e) e.textContent = n + '/' + k.jaksot.length + ' osaa';
+      var m = $('.tila-merkki', k.el), teksti = '';
+      if (v) teksti = k.jatkuuVk ? 'tämän viikon osuus tehty · jatkuu viikolla ' + k.jatkuuVk : 'tehty';
+      else if (siirretty(k)) teksti = 'siirretty myöhemmäksi';
+      else if (n) teksti = 'kesken';
+      if (m) { m.textContent = teksti; m.hidden = !teksti; }
+      var sv = $('.seuraavaksi', k.el);
+      if (sv) sv.hidden = !nyt;
+      if (k.valmisEl) {
+        k.valmisEl.hidden = !v;
+        var sb = $('[data-toiminto=seuraava-kortti]', k.valmisEl), nx = s && s.kesken;
+        var nayta = v && !k.vapaa && !!nx && nx !== k && !!nx.nappi && nx.nappi.offsetParent !== null;
+        $('.kortti-valmis-teksti', k.valmisEl).innerHTML = '<strong>' + (k.jatkuuVk ? 'Tämän viikon osuus on tehty.</strong> ' +
+          'Tehtävä jatkuu viikolla ' + k.jatkuuVk + '.' : 'Tehtävä on tehty.</strong>') +
+          (nayta ? ' Seuraavaksi: ' + esc(lause(nx.otsikko)) : '');
+        sb.hidden = !nayta;
+      }
+    });
+    viikot.forEach(function (w) {
+      var t = $('.viikko-tila', w.el);
+      if (!opiskeluviikko(w)) return;
+      var kortit = w.kohteet.filter(function (k) { return pakollinen(k) && !k.mat; });
+      var tehdyt = kortit.filter(valmis).length, puuttuu = kortit.length - tehdyt;
+      var vt = $('.vt-teksti', w.el);
+      if (vt && tark[w.iso]) vt.textContent = 'Viikkotarkistus tehty ' + pv(tark[w.iso].pvm || pvm()) + '.';
+      var vapaat = $('.vapaaehtoiset', w.el);
+      if (vapaat) vapaat.hidden = !(s && w === s.nyky && (nykyTila === 'RIITTAA' || nykyTila === 'KURSSI_VALMIS'));
+      if (!t || !s) return;
+      var tila_ = '', sana = '';
+      if (w === s.nyky) {
+        tila_ = !s.kesken && !puuttuu ? 'Tämän viikon työt on tehty.' : 'Tällä viikolla ' + tehdyt + '/' + kortit.length + ' tehtävää tehty.';
+        sana = 'nyt';
+      } else if (!puuttuu) { tila_ = 'Tehty.'; sana = 'tehty'; }
+      else if (w.i < s.nyky.i) { tila_ = 'Kesken: ' + puuttuu + (puuttuu === 1 ? ' tehtävä' : ' tehtävää') + ' tekemättä.'; sana = 'kesken'; }
+      else { tila_ = 'Tuleva' + (w.kesto ? ' · ' + w.kesto : '') + '.'; sana = 'tuleva'; }
+      t.textContent = tila_;
+      t.hidden = !tila_;
+      w.el.setAttribute('data-vk-tila', sana);
+    });
+    $$('.vk-pala').forEach(function (pala) {
+      var k = kohdeId[pala.dataset.kortti], n = k ? k.jaksot.filter(function (j) { return j.checked; }).length : 0;
+      if (!k) return;
+      pala.className = 'vk-pala' + (valmis(k) ? ' tehty' : siirretty(k) ? ' siirretty' : n ? ' kesken' : '');
+    });
+    paivitaKurssi(s);
+  }
+  // Kurssin viikkonauha ja otsikko (U3): tila sanoina ruudunlukijalle, väri ja kehys näkyvästi.
+  var KOKO = $('.koko'), YHT = KOKO ? +KOKO.dataset.yht : 0;
+  function paivitaKurssi(s) {
+    if (!s) return;
+    var otsikko = $('#koko-otsikko');
+    if (otsikko && s.nyky.opnro && !s.ennen) otsikko.textContent = 'Opiskeluviikko ' + s.nyky.opnro + '/' + YHT;
+    $$('.nauha-vk').forEach(function (a) {
+      var w = vk[a.dataset.vk], tila_ = '';
+      if (!w || !opiskeluviikko(w)) { a.removeAttribute('data-tila'); return; }
+      var tekematta = w.kohteet.some(function (k) { return pakollinen(k) && !valmis(k) && !siirretty(k); });
+      if (w === s.nyky) tila_ = tekematta ? 'nyt' : 'tehty';
+      else if (w.i < s.nyky.i) tila_ = tekematta ? 'kesken' : 'tehty';
+      else tila_ = 'tuleva';
+      a.setAttribute('data-tila', tila_);
+      a.setAttribute('aria-label', 'Viikko ' + w.nro + ', ' + (w === s.nyky ? 'tämä viikko' + (tekematta ? '' : ', tehty') : tila_));
+    });
+  }
+  function paivita() {
+    var s = tilanne();
+    if (!s) return null;
+    piirraNyt(s);
+    paivitaLista(s);
+    if (nykyTila !== 'VIIKKO_VAIHTUI' && ui.viimeisinViikko !== s.nyky.iso) {
+      ui.viimeisinViikko = s.nyky.iso;
+      tallennaUi();
+    }
+    return s;
+  }
+
+  // -- viikkojen paikat: nykyinen viikko ylös, edellisten viikkojen keskeneräiset sen yläpuolelle, muut aikajanalle --
+  function asetteleViikot(s) {
+    var TAMA = $('#tama-viikko'), KESKEN = $('#kesken-viikot'), KAIKKI = $('#viikot');
+    viikot.forEach(function (w) {
+      var paikka = w === s.nyky ? TAMA : w.i < s.nyky.i && w.kohteet.some(function (k) {
+        return pakollinen(k) && !valmis(k) && !siirretty(k);
+      }) ? KESKEN : KAIKKI;
+      if (paikka !== KAIKKI) {  // aikajanalle jää viittaus siirrettyyn viikkoon
+        var pk = document.createElement('p');
+        pk.className = 'vk-paikka';
+        pk.innerHTML = '<a href="#' + esc(w.el.id) + '"><span class="vk-nimi">Viikko ' + esc(w.nro) + '</span> ' +
+          (paikka === TAMA ? 'tämä viikko' : 'kesken') + ', ylempänä</a>';
+        KAIKKI.appendChild(pk);
+      }
+      paikka.appendChild(w.el);
+      if (w.avaaja) { w.avaaja.hidden = paikka !== KAIKKI; asetaAuki(w.avaaja, paikka !== KAIKKI); }
+    });
+    KESKEN.hidden = !$('section.viikko', KESKEN);
+  }
+  function nayta(el) {
+    if (el.scrollIntoView) el.scrollIntoView({ behavior: VAHEMMAN ? 'auto' : 'smooth', block: 'nearest' });
+  }
+
+  // -- merkinnät --
+  var ajastimet = {}, VIIVE = 1600;
+  function aseta(j, arvo, paiva_) {
+    j.checked = arvo;
+    if (arvo) tila[j.dataset.id] = paiva_ || pvm(); else delete tila[j.dataset.id];
+  }
+  function peruSiirto(k) { if (ajastimet[k.id]) { clearTimeout(ajastimet[k.id]); delete ajastimet[k.id]; } }
+  // Valmis kortti tiivistyy paikallaan ja seuraava avautuu. Automaattisesti (fokus=false) seuraava avataan vain, jos se
+  // on alempana, eikä fokus tai vieritys liiku. Muita kortteja ei koskaan suljeta.
+  function siirry(k, fokus) {
+    peruSiirto(k);
+    if (!valmis(k)) return;
+    var s = tilanne(), seur = s && s.kesken;
+    if (k.nappi && onAuki(k.nappi)) { asetaAuki(k.nappi, false); muistaAuki(k.id, false); }
+    if (seur && seur !== k && seur.nappi && !k.vapaa && seur.nappi.offsetParent !== null && (fokus || jalkeen(seur, k))) {
+      if (!onAuki(seur.nappi)) asetaAuki(seur.nappi, true);
+      ui.avoinKortti = seur.id;
+      tallennaUi();
+      if (fokus) { seur.nappi.focus(); nayta(seur.el); }
+    }
+    paivitaLista(s);
+  }
+  function merkitty(j, lahde) {
+    var k = jaksonKohde[j.dataset.id], t = pvm();
+    if (!k) return;
+    var tk = on(ui.tauko) && ui.tauko.pvm === t ? ui.tauko : { pvm: t, jaksoja: 0, min: 0 };
+    tk.jaksoja++;
+    tk.min += +j.dataset.min;
+    ui.tauko = tk;
+    if (ui.ylitysTanaan === t) ui.ylitysMerkitty = t;
+    var viesti, s = tilanne();
+    if (valmis(k)) {
+      var seur = s && s.kesken;
+      viesti = k.jatkuuVk ? k.otsikko + ': tämän viikon osuus on tehty. Jatkuu viikolla ' + k.jatkuuVk + '.' : k.otsikko + ' on tehty.';
+      if (seur && !k.vapaa) viesti += ' Seuraavaksi: ' + seur.otsikko + ' (' + mins(seur, 'jaljella') + ' min).';
+      if (lahde === 'lista') { peruSiirto(k); ajastimet[k.id] = setTimeout(function () { siirry(k, false); }, VIIVE); }
+    } else {
+      viesti = j.dataset.lyhyt + ' tehty. Seuraavaksi ' + jaksoTeksti(seuraava(k)) + '.';
+    }
+    var li = j.closest('li');
+    if (li) { li.classList.add('juuri'); setTimeout(function () { li.classList.remove('juuri'); }, 2400); }
+    tallennaUi();
+    ilmoita(viesti);
+  }
+  P.addEventListener('change', function (e) {
+    var t = e.target;
+    if (!t.matches || !t.matches('input.jakso')) return;
+    aseta(t, t.checked);
+    tallenna();
+    if (t.checked) merkitty(t, 'lista');
+    else {
+      var k = jaksonKohde[t.dataset.id];
+      if (k) peruSiirto(k);
+      ilmoita('Merkintä poistettu: ' + t.dataset.nimi + '.');
+    }
+    paivita();
+  });
+  function fokusNyt() {
+    var o = $('#nyt-otsikko');
+    if (o) { try { o.focus({ preventScroll: true }); } catch (x) { o.focus(); } }
+  }
+  P.addEventListener('click', function (e) {
+    var av = e.target.closest && e.target.closest('.avaaja');
+    if (av) {
+      var auki = !onAuki(av), li = av.closest('.kohde');
+      asetaAuki(av, auki);
+      if (li) muistaAuki(li.dataset.kortti, auki);
+      return;
+    }
+    var b = e.target.closest && e.target.closest('[data-toiminto]');
+    if (!b) return;
+    var toim = b.dataset.toiminto, t = pvm();
+    if (toim === 'ehdotus') {  // ehdotuksen avaus ei siirrä fokusta pois painikkeesta
+      ehdotusAuki = !ehdotusAuki;
+      paivita();
+      var eb = $('#nyt [data-toiminto=ehdotus]');
+      if (eb) eb.focus();
+      return;
+    }
+    if (toim === 'seuraava-kortti') {
+      var kk = kohdeId[b.closest('.kohde').dataset.kortti];
+      if (kk) siirry(kk, true);
+      return;
+    }
+    if (toim === 'sulje-vihje') {
+      ui.vihjeSuljettu = t;
+      tallennaUi();
+      $('#vihje').hidden = true;
+      fokusNyt();
+      return;
+    }
+    if (toim === 'merkitse') {
+      var j = document.getElementById('j-' + b.dataset.jakso);
+      if (j && !j.checked) { aseta(j, true); tallenna(); merkitty(j, 'paneeli'); kuittaus = { j: j, k: jaksonKohde[j.dataset.id] }; }
+    } else if (toim === 'seuraava') {
+      if (e.detail > 1) return;  // kaksoisnapautus Merkitse-napissa ei ohita kuittausta
+      var q = kuittaus;
+      kuittaus = null;
+      if (q && q.k) siirry(q.k, false);
+    } else if (toim === 'peru') {
+      var pj = document.getElementById('j-' + b.dataset.jakso);
+      if (pj && pj.checked) { aseta(pj, false); tallenna(); peruSiirto(jaksonKohde[pj.dataset.id]); }
+      kuittaus = null;
+      ilmoita('Merkintä peruttu.');
+    } else if (toim === 'jatka') { ui.tauko = { pvm: t, jaksoja: 0, min: 0 }; ui.taukoKuitattu = aika(); }
+    else if (toim === 'ylitys') { ui.ylitysTanaan = t; }
+    else if (toim === 'jatkan' || toim === 'siirra') {
+      ehdotusAuki = false;
+      if (toim === 'siirra') {
+        b.dataset.kohteet.split(' ').forEach(function (id) { siirrot[id] = { pvm: t, syy: 'jaljessa' }; });
+        kirjoitaAvain(K_SIIRTO, siirrot);
+      }
+      var s1 = tilanne();
+      ui.jaljessaKuitattu = { viikko: s1.nyky.iso, ero: s1.ero };
+    } else if (toim === 'tarkistus') {
+      var kesken = $('input[name=vt-kesken]:checked', NYT), kuorma = $('input[name=vt-kuorma]:checked', NYT);
+      var teksti = ($('#vt-kesken-teksti', NYT) || {}).value || '';
+      var kv = kesken ? kesken.value : '', jai = kv === 'jai' || (!kv && teksti.trim());
+      tark[b.dataset.viikko] = { pvm: t, kesken: jai ? teksti.trim() || 'jäi' : 'ei', kuorma: kuorma ? kuorma.value : null };
+      kirjoitaAvain(K_TARK, tark);
+      if (b.dataset.viikko === ui.viimeisinViikko) { var s2 = tilanne(); if (s2) ui.viimeisinViikko = s2.nyky.iso; }
+      ilmoita('Viikkotarkistus tallennettu.');
+    } else return;
+    tallennaUi();
+    paivita();
+    fokusNyt();
+  });
+
+  // -- vienti: toteuma.schema.json-muoto, yksi kirjaus osaa kohti viikossa --
+  function kirjaukset() {
+    var tulos = [], siirretyt = {};
+    Object.keys(siirrot).forEach(function (id) { if (on(siirrot[id])) siirretyt[id.split('~')[0]] = siirrot[id]; });
+    Object.keys(ryhmat).forEach(function (r) {
+      var js = ryhmat[r], tehty = [], p = '';
+      js.forEach(function (j, i) {
+        if (!j.checked) return;
+        tehty.push(i + 1);
+        if (tila[j.dataset.id] > p) p = tila[j.dataset.id];
+      });
+      var siirto = siirretyt[r];
+      if (!tehty.length && !siirto) return;
+      var osa = js[0].dataset.osa, w = vk[js[0].dataset.vk], alku = w ? w.alkaa : '';
+      var o = { iso_viikko: js[0].dataset.vk, kirjattu: '' };
+      o[osa.indexOf('tuki-') === 0 ? 'tuki_id' : 'osa_id'] = osa;
+      if (siirto && siirto.pvm > p) p = siirto.pvm;
+      o.kirjattu = p > alku ? p : alku;
+      o.tila = !tehty.length ? 'ei_aloitettu' : tehty.length === js.length && !js[js.length - 1].dataset.jatkuu ? 'tehty' : 'kesken';
+      o.kaytetty_min = null;
+      o.jumitti = false;
+      o.huomio = siirto ? 'Siirretty myöhemmäksi ' + pv(siirto.pvm, true) + ' (jäljessä aikataulusta).' : '';
+      o.kirjaaja = 'opiskelija';
+      o.jaksot = { tehty: tehty, yhteensa: js.length };
+      tulos.push(o);
+    });
+    return tulos;
+  }
+  function tarkistuslista() {
+    return Object.keys(tark).filter(function (k) { return on(tark[k]) && vk[k]; }).sort().map(function (k) {
+      var x = tark[k];
+      return { iso_viikko: k, pvm: x.pvm, kesken: String(x.kesken || 'ei').slice(0, 300),
+        kuorma: ['sopiva', 'liikaa', 'liian-vahan'].indexOf(x.kuorma) >= 0 ? x.kuorma : null };
+    });
+  }
+  function tulos(teksti) { $('#tuo-tulos').textContent = teksti; }
+  function vie() {
+    var data = {
+      schema_versio: '1.0', luotu: new Date().toISOString(), tuottaja: 'seuranta',
+      pseudonyymi: D.pseudonyymi, toteutus_id: D.toteutus,
+      lahde_polku: { luotu: D.polkuLuotu, sha256: D.polkuSha || null },
+      kirjaukset: kirjaukset()
+    };
+    var vt = tarkistuslista();
+    if (vt.length) data.viikkotarkistukset = vt;
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
+    a.download = 'merkinnat-' + D.pseudonyymi + '-' + D.toteutus + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+    tulos('Vietiin ' + data.kirjaukset.length + ' kirjausta tiedostoon ' + a.download + '.');
+  }
+
+  // -- tuonti: lisää merkinnät, siirrot ja tarkistukset olemassa olevien päälle (ei poista mitään) --
+  function tuo(teksti) {
+    var o, n = 0;
+    try { o = JSON.parse(teksti); } catch (e) { return tulos('Tiedostoa ei voi lukea.'); }
+    if (!o || !Array.isArray(o.kirjaukset) || o.pseudonyymi !== D.pseudonyymi || o.toteutus_id !== D.toteutus) {
+      return tulos('Tiedosto ei kuulu tähän aikatauluun.');
+    }
+    o.kirjaukset.forEach(function (k) {
+      var avain = k.iso_viikko + ':' + (k.osa_id || k.tuki_id), r = ryhmat[avain];
+      if (!r) return;
+      if (typeof k.huomio === 'string' && k.huomio.indexOf('Siirretty myöhemmäksi') === 0 && !siirrot[avain]) {
+        siirrot[avain] = { pvm: k.kirjattu, syy: 'jaljessa' };
+      }
+      var T = k.jaksot && Array.isArray(k.jaksot.tehty) ? k.jaksot.tehty : null;
+      r.forEach(function (j, i) {
+        if (!(T ? T.indexOf(i + 1) >= 0 : k.tila === 'tehty') || j.checked) return;
+        aseta(j, true, typeof k.kirjattu === 'string' ? k.kirjattu : pvm());
+        n++;
+      });
+    });
+    (Array.isArray(o.viikkotarkistukset) ? o.viikkotarkistukset : []).forEach(function (x) {
+      if (on(x) && vk[x.iso_viikko] && !tark[x.iso_viikko]) tark[x.iso_viikko] = { pvm: x.pvm, kesken: x.kesken, kuorma: x.kuorma };
+    });
+    kirjoitaAvain(K_SIIRTO, siirrot);
+    kirjoitaAvain(K_TARK, tark);
+    tallenna();
+    paivita();
+    tulos('Tuotiin ' + n + ' uutta merkintää.');
+  }
+  $('#vie').addEventListener('click', vie);
+  $('#tuo').addEventListener('click', function () { $('#tuo-tiedosto').click(); });
+  $('#tuo-tiedosto').addEventListener('change', function (e) {
+    var f = e.target.files[0], l = new FileReader();
+    if (!f) return;
+    l.onload = function () { tuo(String(l.result)); };
+    l.readAsText(f);
+    e.target.value = '';
+  });
+
+  // -- ankkurit: viikkolinkki tai #-osoite avaa kohteen ja sen sisältävät lohkot --
+  function avaa(id) {
+    try {
+      var e = id && document.getElementById(decodeURIComponent(id));
+      if (!e) return;
+      var w = e.closest('section.viikko'), wb = w && $('.viikko-avaaja', w);
+      if (wb && !wb.hidden) asetaAuki(wb, true);
+      for (var p = e; p && p !== P; p = p.parentNode) {
+        if (p.id && p.hidden) asetaAuki($('[aria-controls="' + p.id + '"]'), true);
+      }
+    } catch (x) { /* virheellinen ankkuri: ei tehdä mitään */ }
+  }
+  P.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a) avaa(a.getAttribute('href').slice(1));
+  });
+  window.addEventListener('hashchange', function () { avaa(location.hash.slice(1)); });
+
+  // -- "↑ Nyt": paluulinkki näkyy, kun Nyt-paneeli on vierittynyt pois näkyvistä (U7) --
+  var YLOS = $('#ylos');
+  if (YLOS && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (m) { YLOS.hidden = m[0].isIntersecting; }).observe($('#nyt'));
+    YLOS.addEventListener('click', function (e) {
+      e.preventDefault();
+      nayta($('#nyt'));
+      fokusNyt();
+    });
+  }
+
+  lue();
+  jaksot.forEach(function (j) { j.checked = !!tila[j.dataset.id]; });
+  $$('.lohko-avaaja, .vapaaehtoiset .avaaja').forEach(function (b) { asetaAuki(b, false); });
+  $$('.tavoite-avaaja').forEach(function (b) { b.hidden = false; asetaAuki(b, false); });
+  kohteet.forEach(function (k) { if (k.nappi) asetaAuki(k.nappi, false); });
+  var s = tilanne();
+  if (s && !ui.ensinNahty) {  // ensimmäinen käynti: suoraan työhön, ohje yhtenä rivinä (U8)
+    ui.ensinNahty = pvm();
+    ui.viimeisinViikko = s.nyky.iso;
+    tallennaUi();
+  }
+  $('#vihje').hidden = !!ui.vihjeSuljettu;
+  if (s) {
+    asetteleViikot(s);
+    var avoimet = Array.isArray(ui.avoimet) ? ui.avoimet : ui.avoinKortti ? [ui.avoinKortti] : [];
+    kohteet.forEach(function (k) {  // seuraava kortti ja oppijan itse avaamat (keskeneräiset) kortit auki
+      if (k.nappi && !valmis(k) && (k === s.kesken || avoimet.indexOf(k.id) >= 0) && k.nappi.offsetParent !== null) {
+        asetaAuki(k.nappi, true);
+      }
+    });
+  }
+  paivita();
+  tiedotus();
+  $('.tallennus').hidden = false;
+  avaa(location.hash.slice(1));
+})();
+</script>
+</body>
+</html>
